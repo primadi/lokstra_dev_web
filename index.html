@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Lokstra Framework - Simple. Scalable. Structured." />
   <title>Lokstra Framework</title>
-  <image src="./assets/logo.png" alt="Lokstra Logo" style="display: none;" />
+  <link rel="icon" href="./assets/logo.png" type="image/png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
   <style>
     :root {
@@ -69,15 +69,24 @@
       top: 1rem;
       right: 1rem;
     }
+    .lang-switch a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .lang-switch a:hover {
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
   <div class="lang-switch">
-    <a href="#">🇮🇩 Indonesia</a> | <a href="#">English 🇬🇧</a>
+    <a href="#">🇮🇩 Indonesia</a> | <a href="#">🇺🇸 English</a>
   </div>
   <header>
     <h1>Lokstra Framework</h1>
-    <p><em>Simple. Scalable. Structured.</em></p>
+    <img src="./assets/logo.png" alt="Lokstra Logo" style="height: 300px; margin: 1rem 0;" />
+    <!-- <p><em>Simple. Scalable. Structured.</em></p> -->
     <div>
       <a href="https://github.com/lokstra/framework" class="btn">View on GitHub</a>
       <a href="#get-started" class="btn">Get Started</a>
