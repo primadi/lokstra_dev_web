@@ -24,14 +24,12 @@ async function loadHTML(elementId, filePath) {
 // Utility function to load meta tags
 async function loadMetaTags(baseMeta, pageMeta) {
   try {
-    // Clear existing meta tags to prevent duplicates
+    // Remove existing Open Graph and Twitter meta tags
     const existingMetas = document.querySelectorAll(
-      'meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], title'
+      'meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], title:not(:first-of-type)'
     );
     existingMetas.forEach((meta) => {
-      if (!meta.getAttribute("charset") && !meta.getAttribute("viewport")) {
-        meta.remove();
-      }
+      meta.remove();
     });
 
     // Load base meta tags first
