@@ -93,7 +93,7 @@
             <button class="btn" onclick="testLocalStorage()">Test LocalStorage</button>
             <button class="btn" onclick="clearLocalData()">Clear Local Data</button>
             <button class="btn" onclick="forceResetCounter()">Reset to Base Count</button>
-            <button class="btn" onclick="simulateVisit()">Simulate New Visit</button>
+            <button class="btn" onclick="simulateNewDay()">Simulate New Day</button>
             <button class="btn" onclick="refreshCounter()">Refresh Counter</button>
         </div>
 
@@ -106,22 +106,26 @@
                 <strong>LocalStorage Key:</strong> lokstra-visitor-count
             </div>
             <div class="data-item">
-                <strong>Session Key:</strong> lokstra-session-<span id="session-date"></span>
+                <strong>Date Key:</strong> lokstra-last-visit-date
+            </div>
+            <div class="data-item">
+                <strong>Today's Date:</strong> <span id="session-date"></span>
             </div>
             <div class="data-item">
                 <strong>Current LocalStorage Value:</strong> <span id="localStorage-value">-</span>
             </div>
             <div class="data-item">
-                <strong>Session Storage Value:</strong> <span id="sessionStorage-value">-</span>
+                <strong>Last Visit Date:</strong> <span id="lastVisitDate-value">-</span>
             </div>
         </div>
 
         <div class="section">
             <h2>🔄 How It Works</h2>
             <ol>
-                <li><strong>Primary:</strong> Tries to fetch count from external API (visitorbadge.io)</li>
+                <li><strong>Primary:</strong> Tries to fetch count from external API (HTTPBin test)</li>
                 <li><strong>Fallback:</strong> Uses localStorage counter if API fails</li>
-                <li><strong>Session Check:</strong> Only increments once per day per browser</li>
+                <li><strong>Daily Check:</strong> Only increments once per day (not per session)</li>
+                <li><strong>Date Tracking:</strong> Uses localStorage to track last visit date</li>
                 <li><strong>Display:</strong> Formats numbers (1K, 1M, etc.)</li>
             </ol>
         </div>
@@ -190,7 +194,8 @@
 
         function getLocalVisitorCount() {
             const key = "lokstra-visitor-count";
-            const sessionKey = "lokstra-session-" + new Date().toDateString();
+            const dateKey = "lokstra-last-visit-date";
+            const today = new Date().toDateString();
             
             // Get current count - if it's too low (old logic), reset to base
             let count = parseInt(localStorage.getItem(key) || "0");
@@ -199,17 +204,21 @@
             if (count < 42) {
                 count = 42 + Math.floor(Math.random() * 20); // Base 42-61
                 localStorage.setItem(key, count.toString());
+                localStorage.setItem(dateKey, today);
                 console.log("Visitor counter: reset old count to new base:", count);
+                return count;
             }
 
-            // Check if this is a new visit (simple session-based)
-            if (!sessionStorage.getItem(sessionKey)) {
+            // Check if this is a new day visit
+            const lastVisitDate = localStorage.getItem(dateKey);
+            if (lastVisitDate !== today) {
+                // New day - increment counter
                 count += Math.floor(Math.random() * 3) + 1; // Add 1-3 to simulate organic growth
                 localStorage.setItem(key, count.toString());
-                sessionStorage.setItem(sessionKey, "visited");
-                console.log("Visitor counter: new visit detected, incremented to:", count);
+                localStorage.setItem(dateKey, today);
+                console.log("Visitor counter: new day visit detected, incremented to:", count);
             } else {
-                console.log("Visitor counter: returning existing count:", count);
+                console.log("Visitor counter: same day visit, returning existing count:", count);
             }
 
             return count;
@@ -238,13 +247,12 @@
             const localValue = localStorage.getItem("lokstra-visitor-count") || "0";
             document.getElementById("localStorage-value").textContent = localValue;
             
-            // Update sessionStorage value
-            const sessionKey = "lokstra-session-" + new Date().toDateString();
-            const sessionValue = sessionStorage.getItem(sessionKey) || "not set";
-            document.getElementById("sessionStorage-value").textContent = sessionValue;
+            // Update last visit date
+            const lastVisitDate = localStorage.getItem("lokstra-last-visit-date") || "never";
+            document.getElementById("lastVisitDate-value").textContent = lastVisitDate;
 
             // Show current counter status
-            document.getElementById("current-count").textContent = `LocalStorage: ${localValue} | Session: ${sessionValue}`;
+            document.getElementById("current-count").textContent = `LocalStorage: ${localValue} | Last Visit: ${lastVisitDate}`;
         }
 
         async function testAPI() {
@@ -334,8 +342,7 @@
 
         function clearLocalData() {
             localStorage.removeItem("lokstra-visitor-count");
-            const sessionKey = "lokstra-session-" + new Date().toDateString();
-            sessionStorage.removeItem(sessionKey);
+            localStorage.removeItem("lokstra-last-visit-date");
             
             const output = document.getElementById("test-output");
             output.innerHTML += '<div class="test-result warning">⚠️ Local data cleared - will use new base count (42) on next visit</div>';
@@ -345,21 +352,20 @@
         function forceResetCounter() {
             // Force reset to new logic
             localStorage.setItem("lokstra-visitor-count", "42");
-            const sessionKey = "lokstra-session-" + new Date().toDateString();
-            sessionStorage.removeItem(sessionKey);
+            localStorage.setItem("lokstra-last-visit-date", new Date().toDateString());
             
             const output = document.getElementById("test-output");
-            output.innerHTML += '<div class="test-result info">🔄 Counter reset to base value 42</div>';
+            output.innerHTML += '<div class="test-result info">🔄 Counter reset to base value 42 for today</div>';
             updateStatus();
         }
 
-        function simulateVisit() {
-            const sessionKey = "lokstra-session-" + new Date().toDateString();
-            sessionStorage.removeItem(sessionKey);
+        function simulateNewDay() {
+            // Simulate next day by removing the date key
+            localStorage.removeItem("lokstra-last-visit-date");
             
             const count = getLocalVisitorCount();
             const output = document.getElementById("test-output");
-            output.innerHTML += `<div class="test-result info">🔄 Simulated new visit. Count: ${count}</div>`;
+            output.innerHTML += `<div class="test-result info">🔄 Simulated new day visit. Count: ${count}</div>`;
             updateStatus();
         }
 

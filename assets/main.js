@@ -453,7 +453,8 @@ async function fetchVisitorCount() {
 // Local visitor counter as fallback
 function getLocalVisitorCount() {
   const key = "lokstra-visitor-count";
-  const sessionKey = "lokstra-session-" + new Date().toDateString();
+  const dateKey = "lokstra-last-visit-date";
+  const today = new Date().toDateString();
 
   // Get current count - if it's too low (old logic), reset to base
   let count = parseInt(localStorage.getItem(key) || "0");
@@ -462,17 +463,21 @@ function getLocalVisitorCount() {
   if (count < 42) {
     count = 42 + Math.floor(Math.random() * 20); // Base 42-61
     localStorage.setItem(key, count.toString());
+    localStorage.setItem(dateKey, today);
     console.log("Visitor counter: reset old count to new base:", count);
+    return count;
   }
 
-  // Check if this is a new visit (simple session-based)
-  if (!sessionStorage.getItem(sessionKey)) {
+  // Check if this is a new day visit
+  const lastVisitDate = localStorage.getItem(dateKey);
+  if (lastVisitDate !== today) {
+    // New day - increment counter
     count += Math.floor(Math.random() * 3) + 1; // Add 1-3 to simulate organic growth
     localStorage.setItem(key, count.toString());
-    sessionStorage.setItem(sessionKey, "visited");
-    console.log("Visitor counter: new visit detected, incremented to:", count);
+    localStorage.setItem(dateKey, today);
+    console.log("Visitor counter: new day visit detected, incremented to:", count);
   } else {
-    console.log("Visitor counter: returning existing count:", count);
+    console.log("Visitor counter: same day visit, returning existing count:", count);
   }
 
   return count;
