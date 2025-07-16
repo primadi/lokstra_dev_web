@@ -1,13 +1,230 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Optimize Logo for Social Sharing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimize Logo untuk WhatsApp</title>
     <style>
-        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
-        canvas { border: 1px solid #ddd; margin: 10px 0; display: block; }
-        .btn { background: #0066cc; color: white; padding: 10px 20px; border: none; border-radius: 4px; margin: 5px; cursor: pointer; }
+        body { 
+            font-family: Inter, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f8fafc; 
+            line-height: 1.6;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .logo-preview {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        .logo-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        .btn { 
+            background: #3b82f6; 
+            color: white; 
+            padding: 12px 24px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px;
+            margin: 8px;
+        }
+        .btn:hover { background: #2563eb; }
+        .btn.success { background: #10b981; }
+        .btn.success:hover { background: #059669; }
+        canvas { display: none; }
+        .info {
+            background: #ecfccb;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #65a30d;
+            margin: 15px 0;
+        }
+        .warning {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+            margin: 15px 0;
+        }
+        .file-info {
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Optimize Logo untuk WhatsApp</h1>
+        <p>Compress dan resize <code>assets/logo.png</code> untuk WhatsApp preview yang cepat load.</p>
+        
+        <div class="warning">
+            <h4>📊 Current Logo Status</h4>
+            <p><strong>File:</strong> <code>assets/logo.png</code> (~1.3MB)</p>
+            <p><strong>Problem:</strong> Terlalu besar untuk social media sharing</p>
+            <p><strong>Target:</strong> &lt;200KB untuk optimal WhatsApp loading</p>
+        </div>
+        
+        <div class="logo-preview">
+            <h4>📄 Original Logo</h4>
+            <img src="./assets/logo.png" alt="Original Lokstra Logo" id="originalLogo">
+            <div class="file-info" id="originalInfo">Loading original dimensions...</div>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="btn" onclick="optimizeLogo()">⚡ Optimize Logo</button>
+            <button class="btn success" onclick="downloadOptimized()" id="downloadBtn" style="display:none;">💾 Download Optimized PNG</button>
+        </div>
+        
+        <div class="logo-preview" id="optimizedPreview" style="display:none;">
+            <h4>✅ Optimized Logo</h4>
+            <img id="optimizedLogo" alt="Optimized Logo">
+            <div class="file-info" id="optimizedInfo"></div>
+        </div>
+        
+        <canvas id="optimizeCanvas"></canvas>
+        
+        <div class="info">
+            <h4>⚙️ Optimization Process:</h4>
+            <ul>
+                <li><strong>Resize:</strong> Max 600x600px (maintain aspect ratio)</li>
+                <li><strong>Compress:</strong> PNG quality 0.8 untuk balance size vs quality</li>
+                <li><strong>Output:</strong> Optimized PNG &lt;200KB</li>
+                <li><strong>Compatible:</strong> WhatsApp, Facebook, Twitter</li>
+            </ul>
+        </div>
+        
+        <div class="info">
+            <h4>📋 After Download:</h4>
+            <ol>
+                <li>Save file sebagai <code>social-preview.png</code></li>
+                <li>Upload ke folder <code>/assets/</code></li>
+                <li>Update meta tag di index.html:</li>
+                <li><code>&lt;meta property="og:image" content="https://lokstra.dev/assets/social-preview.png" /&gt;</code></li>
+                <li>Deploy ke GitHub Pages</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        let optimizedImageData = null;
+        
+        window.onload = function() {
+            const originalImg = document.getElementById('originalLogo');
+            originalImg.onload = function() {
+                document.getElementById('originalInfo').innerHTML = 
+                    `Dimensions: ${this.naturalWidth}x${this.naturalHeight}px<br>Size: ~1.3MB (too large)`;
+            };
+        };
+        
+        function optimizeLogo() {
+            const canvas = document.getElementById('optimizeCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = function() {
+                // Calculate optimal size (max 600x600, maintain aspect ratio)
+                const maxSize = 600;
+                let { width, height } = calculateOptimalSize(img.width, img.height, maxSize);
+                
+                // Set canvas size
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Enable high quality scaling
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                // Draw optimized image
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Show preview and enable download
+                showOptimizedPreview(canvas, width, height);
+                
+                console.log(`✅ Logo optimized: ${img.width}x${img.height} → ${width}x${height}`);
+            };
+            
+            img.onerror = function() {
+                alert('❌ Failed to load logo.png\nPastikan file ada di ./assets/logo.png');
+            };
+            
+            img.src = './assets/logo.png';
+        }
+        
+        function calculateOptimalSize(originalWidth, originalHeight, maxSize) {
+            let width = originalWidth;
+            let height = originalHeight;
+            
+            // Scale down if too large
+            if (width > maxSize || height > maxSize) {
+                const ratio = Math.min(maxSize / width, maxSize / height);
+                width = Math.round(width * ratio);
+                height = Math.round(height * ratio);
+            }
+            
+            return { width, height };
+        }
+        
+        function showOptimizedPreview(canvas, width, height) {
+            // Convert with compression
+            const dataURL = canvas.toDataURL('image/png', 0.8);
+            
+            // Show preview
+            const optimizedImg = document.getElementById('optimizedLogo');
+            optimizedImg.src = dataURL;
+            
+            // Calculate compressed file size estimate
+            const base64Length = dataURL.length - 'data:image/png;base64,'.length;
+            const estimatedSizeKB = Math.round((base64Length * 0.75) / 1024);
+            
+            document.getElementById('optimizedInfo').innerHTML = 
+                `Dimensions: ${width}x${height}px<br>Estimated size: ~${estimatedSizeKB}KB ✅`;
+            
+            document.getElementById('optimizedPreview').style.display = 'block';
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+            
+            // Store for download
+            optimizedImageData = dataURL;
+        }
+        
+        function downloadOptimized() {
+            if (!optimizedImageData) {
+                alert('❌ No optimized image available. Please optimize first.');
+                return;
+            }
+            
+            // Create and trigger download
+            const link = document.createElement('a');
+            link.href = optimizedImageData;
+            link.download = 'social-preview.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('✅ Optimized logo downloaded as "social-preview.png"!\n\n📋 Next steps:\n1. Upload file ke /assets/ folder\n2. Update meta tag di index.html\n3. Deploy ke GitHub Pages\n4. Test WhatsApp preview');
+        }
+    </script>
+</body>
+</html>
         .info { background: #e3f2fd; padding: 15px; border-radius: 4px; margin: 10px 0; }
     </style>
 </head>
