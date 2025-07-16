@@ -419,21 +419,24 @@ async function fetchVisitorCount() {
     console.log("Visitor counter: attempting API call...");
 
     // Simple approach: try a basic counter API with CORS support
-    const response = await fetch("https://api.countapi.xyz/get/lokstra.dev/visits", {
-      method: "GET",
-      mode: "cors"
-    });
-    
+    const response = await fetch(
+      "https://api.countapi.xyz/get/lokstra.dev/visits",
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
+
     console.log("Visitor counter: API response status:", response.status);
-    
+
     if (response.ok) {
       const text = await response.text();
       console.log("Visitor counter: raw response:", text);
-      
+
       try {
         const data = JSON.parse(text);
         console.log("Visitor counter: parsed data:", data);
-        
+
         if (data.value !== undefined && !isNaN(data.value)) {
           console.log("Visitor counter: API success, count:", data.value);
           return data.value;
@@ -442,7 +445,7 @@ async function fetchVisitorCount() {
         console.log("Visitor counter: JSON parse failed:", parseError);
       }
     }
-    
+
     throw new Error("API failed or returned invalid data");
   } catch (error) {
     console.log("Visitor counter: API error:", error.message);
@@ -455,7 +458,7 @@ async function fetchVisitorCount() {
 function getLocalVisitorCount() {
   const key = "lokstra-visitor-count";
   const sessionKey = "lokstra-session-" + new Date().toDateString();
-  
+
   // Get base count (simulate some initial visitors)
   let count = parseInt(localStorage.getItem(key) || "42"); // Start with a base number
 
