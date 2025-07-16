@@ -420,23 +420,26 @@ function getLocalVisitorCount() {
   const dateKey = "lokstra-last-visit-date";
   const today = new Date().toDateString();
 
-  // Get current count - if it's too low (old logic), reset to base
-  let count = parseInt(localStorage.getItem(key) || "0");
+  // Get current count - use existing value or start from 1
+  let count = parseInt(localStorage.getItem(key) || "1");
 
-  // Reset old counter values to new base
-  if (count < 42) {
-    count = 42 + Math.floor(Math.random() * 20); // Base 42-61
+  // Only set initial date if this is truly the first visit
+  const lastVisitDate = localStorage.getItem(dateKey);
+  const isFirstVisit = !lastVisitDate;
+  
+  if (isFirstVisit) {
+    // First time visitor - start with count 1
+    count = 1;
     localStorage.setItem(key, count.toString());
     localStorage.setItem(dateKey, today);
-    console.log("Visitor counter: reset old count to new base:", count);
+    console.log("Visitor counter: first visit, starting with count:", count);
     return count;
   }
 
   // Check if this is a new day visit
-  const lastVisitDate = localStorage.getItem(dateKey);
   if (lastVisitDate !== today) {
-    // New day - increment counter
-    count += Math.floor(Math.random() * 3) + 1; // Add 1-3 to simulate organic growth
+    // New day - increment counter by 1
+    count += 1;
     localStorage.setItem(key, count.toString());
     localStorage.setItem(dateKey, today);
     console.log(
