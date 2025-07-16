@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=/" />
+  <title>Redirecting...</title>
+  <script>
+    // GitHub Pages SPA redirect: redirect to index.html and use hash for route
+    var path = window.location.pathname;
+    if (path !== '/' && !path.startsWith('/assets') && !path.startsWith('/partials')) {
+      window.location.replace('/#' + path);
+    } else {
+      window.location.replace('/');
+    }
+  </script>
+</head>
+<body>
+  Redirecting...
+</body>
+</html>

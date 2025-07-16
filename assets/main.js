@@ -1,225 +1,25 @@
 // Lokstra Framework Website - Main JavaScript
 
-// Mobile navigation toggle
-document.addEventListener("DOMContentLoaded", function () {
-  // Mobile navigation functionality
-  function initMobileNav() {
-    const navToggle = document.querySelector(".nav-toggle");
-    const navLinks = document.querySelector(".nav-links");
-    const navOverlay = document.querySelector(".nav-overlay");
-    const body = document.body;
+// Global variables
+// (removed mobileNavInitialized flag as it was causing issues)
 
-    if (navToggle && navLinks) {
-      // Toggle mobile menu
-      navToggle.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleMobileMenu();
-      });
-
-      // Close menu when clicking on overlay
-      if (navOverlay) {
-        navOverlay.addEventListener("click", () => {
-          closeMobileMenu();
-        });
+// Utility function to load HTML content
+async function loadHTML(elementId, filePath) {
+  try {
+    const response = await fetch(filePath);
+    if (response.ok) {
+      const html = await response.text();
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.innerHTML = html;
       }
-
-      // Close mobile menu when clicking on a link
-      document.querySelectorAll(".nav-links a").forEach((link) => {
-        link.addEventListener("click", () => {
-          closeMobileMenu();
-        });
-      });
-
-      // Close menu with escape key
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          closeMobileMenu();
-        }
-      });
-
-      function toggleMobileMenu() {
-        const isActive = navLinks.classList.contains("active");
-        if (isActive) {
-          closeMobileMenu();
-        } else {
-          openMobileMenu();
-        }
-      }
-
-      function openMobileMenu() {
-        navLinks.classList.add("active");
-        if (navOverlay) navOverlay.classList.add("active");
-        body.classList.add("menu-open");
-
-        // Update hamburger icon
-        navToggle.innerHTML = "✕";
-      }
-
-      function closeMobileMenu() {
-        navLinks.classList.remove("active");
-        if (navOverlay) navOverlay.classList.remove("active");
-        body.classList.remove("menu-open");
-
-        // Reset hamburger icon
-        navToggle.innerHTML = "☰";
-      }
-
-      // Ensure menu is closed on window resize
-      window.addEventListener("resize", () => {
-        if (window.innerWidth > 768) {
-          closeMobileMenu();
-        }
-      });
+    } else {
+      console.warn(`Could not load ${filePath}`);
     }
+  } catch (error) {
+    console.warn(`Error loading ${filePath}:`, error);
   }
-
-  // Initialize mobile nav after a small delay to ensure navbar is loaded
-  setTimeout(initMobileNav, 100);
-
-  // Make initMobileNav global so it can be called again after navbar is loaded dynamically
-  window.initMobileNav = function () {
-    const navToggle = document.querySelector(".nav-toggle");
-    const navLinks = document.querySelector(".nav-links");
-    const navOverlay = document.querySelector(".nav-overlay");
-    const body = document.body;
-
-    if (navToggle && navLinks) {
-      // Remove old event listeners (prevent double binding)
-      navToggle.replaceWith(navToggle.cloneNode(true));
-      const newNavToggle = document.querySelector(".nav-toggle");
-
-      // Toggle mobile menu
-      newNavToggle.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleMobileMenu();
-      });
-
-      // Close menu when clicking on overlay
-      if (navOverlay) {
-        navOverlay.onclick = closeMobileMenu;
-      }
-
-      // SPA navigation: intercept navbar link clicks
-      document.querySelectorAll(".nav-links a").forEach((link) => {
-        link.onclick = function (e) {
-          // Only handle internal links (not external)
-          const href = link.getAttribute("href");
-          if (href && !href.startsWith("http")) {
-            e.preventDefault();
-            closeMobileMenu();
-            spaNavigate(href);
-          }
-        };
-      });
-      // SPA navigation: load page content and update history
-      async function spaNavigate(href, isPopState) {
-        // Map page to meta file if needed
-        let metaFile = "./assets/meta-base.html";
-        if (href === "about.html") metaFile = "./assets/meta-about.html";
-        else if (href === "architecture.html")
-          metaFile = "./assets/meta-architecture.html";
-        else if (href === "index.html") metaFile = "./assets/meta-home.html";
-        // Add more mappings as needed
-
-        // Load meta tags and main content
-        await loadMetaTags("./assets/meta-base.html", metaFile);
-        await loadHTML("navbar-container", "./assets/navbar.html");
-        await loadHTML("footer-container", "./assets/footer.html");
-        await loadHTML("main-content", href); // assumes main content is in <div id="main-content"></div>
-
-        // Update active nav link
-        setTimeout(() => {
-          const currentPage = href;
-          const navLinks_a = document.querySelectorAll(".nav-links a");
-          navLinks_a.forEach((link) => {
-            link.classList.remove("active");
-            if (link.getAttribute("href") === currentPage) {
-              link.classList.add("active");
-            }
-          });
-        }, 200);
-
-        // Push state if not popstate
-        if (!isPopState) {
-          history.pushState({ href }, "", href);
-        }
-      }
-
-      // Handle browser back/forward
-      window.addEventListener("popstate", function (e) {
-        const href =
-          e.state && e.state.href
-            ? e.state.href
-            : window.location.pathname.split("/").pop() || "index.html";
-        spaNavigate(href, true);
-      });
-
-      // Close menu with escape key
-      document.onkeydown = function (e) {
-        if (e.key === "Escape") closeMobileMenu();
-      };
-
-      function toggleMobileMenu() {
-        const isActive = navLinks.classList.contains("active");
-        if (isActive) {
-          closeMobileMenu();
-        } else {
-          openMobileMenu();
-        }
-      }
-
-      function openMobileMenu() {
-        navLinks.classList.add("active");
-        if (navOverlay) navOverlay.classList.add("active");
-        body.classList.add("menu-open");
-        newNavToggle.innerHTML = "✕";
-      }
-
-      function closeMobileMenu() {
-        navLinks.classList.remove("active");
-        if (navOverlay) navOverlay.classList.remove("active");
-        body.classList.remove("menu-open");
-        newNavToggle.innerHTML = "☰";
-      }
-
-      // Ensure menu is closed on window resize
-      window.addEventListener("resize", () => {
-        if (window.innerWidth > 768) {
-          closeMobileMenu();
-        }
-      });
-    }
-  };
-
-  // First initialization after DOMContentLoaded
-  document.addEventListener("DOMContentLoaded", function () {
-    setTimeout(window.initMobileNav, 100);
-  });
-
-  // Set active navigation link based on current page (with delay for navbar loading)
-  setTimeout(() => {
-    const currentPage =
-      window.location.pathname.split("/").pop() || "index.html";
-    const navLinks_a = document.querySelectorAll(".nav-links a");
-
-    navLinks_a.forEach((link) => {
-      link.classList.remove("active");
-      const href = link.getAttribute("href");
-      if (
-        href === currentPage ||
-        (currentPage === "" && href === "index.html") ||
-        (currentPage === "index.html" && href === "index.html") ||
-        (currentPage === "about.html" && href === "about.html") ||
-        (currentPage === "architecture.html" && href === "architecture.html") ||
-        (currentPage === "blog.html" && href === "blog.html")
-      ) {
-        link.classList.add("active");
-      }
-    });
-  }, 200);
-});
+}
 
 // Utility function to load meta tags
 async function loadMetaTags(baseMeta, pageMeta) {
@@ -242,20 +42,268 @@ async function loadMetaTags(baseMeta, pageMeta) {
   }
 }
 
-// Utility function to load HTML content
-async function loadHTML(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (response.ok) {
-      const html = await response.text();
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.innerHTML = html;
-      }
+// Mobile navigation functionality
+function initMobileNav() {
+  const navToggle = document.querySelector(".nav-toggle");
+  const navLinks = document.querySelector(".nav-links");
+  const navOverlay = document.querySelector(".nav-overlay");
+  const body = document.body;
+
+  if (!navToggle || !navLinks) {
+    console.warn("Nav elements not found, retrying...");
+    return;
+  }
+
+  // Remove existing event listeners if they exist
+  if (navToggle._clickHandler) {
+    navToggle.removeEventListener("click", navToggle._clickHandler);
+  }
+
+  function toggleMobileMenu() {
+    const isActive = navLinks.classList.contains("active");
+    if (isActive) {
+      closeMobileMenu();
     } else {
-      console.warn(`Could not load ${filePath}`);
+      openMobileMenu();
     }
-  } catch (error) {
-    console.warn(`Error loading ${filePath}:`, error);
+  }
+
+  function openMobileMenu() {
+    navLinks.classList.add("active");
+    if (navOverlay) navOverlay.classList.add("active");
+    body.classList.add("menu-open");
+    navToggle.innerHTML = "✕";
+  }
+
+  function closeMobileMenu() {
+    navLinks.classList.remove("active");
+    if (navOverlay) navOverlay.classList.remove("active");
+    body.classList.remove("menu-open");
+    navToggle.innerHTML = "☰";
+  }
+
+  // Create click handler and store reference for removal
+  navToggle._clickHandler = function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMobileMenu();
+  };
+
+  // Toggle mobile menu
+  navToggle.addEventListener("click", navToggle._clickHandler);
+
+  // Close menu when clicking on overlay
+  if (navOverlay) {
+    navOverlay.addEventListener("click", () => {
+      closeMobileMenu();
+    });
+  }
+
+  // Close menu with escape key (only add once)
+  if (!document._escapeHandler) {
+    document._escapeHandler = function (e) {
+      if (e.key === "Escape") {
+        closeMobileMenu();
+      }
+    };
+    document.addEventListener("keydown", document._escapeHandler);
+  }
+
+  // Close menu when clicking on a link and handle SPA navigation
+  document.querySelectorAll(".nav-links a").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      // Only handle internal links (not external)
+      const href = link.getAttribute("href");
+      if (href && !href.startsWith("http")) {
+        e.preventDefault();
+        closeMobileMenu();
+        spaNavigate(href);
+      } else {
+        // For external links, just close the menu
+        closeMobileMenu();
+      }
+    });
+  });
+
+  // Ensure menu is closed on window resize
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      closeMobileMenu();
+    }
+  });
+
+  console.log("Mobile navigation initialized");
+}
+
+// SPA navigation: load page content and update history (supports hash routing)
+async function spaNavigate(route, isPopState) {
+  // Normalize route from hash or href
+  let page = route
+    .replace(/^\/?(partials\/)?/, "")
+    .replace(/\/.*/, "")
+    .replace("#", "")
+    .replace("?", "");
+
+  let isHome = false;
+  if (
+    !page ||
+    page === "" ||
+    page === "index.html" ||
+    page === "/" ||
+    page === "home"
+  ) {
+    page = "index.html";
+    isHome = true;
+  }
+  if (!page.endsWith(".html")) page += ".html";
+  let metaFile = "./assets/meta-base.html";
+  if (page === "about.html") metaFile = "./assets/meta-about.html";
+  else if (page === "architecture.html")
+    metaFile = "./assets/meta-architecture.html";
+  else if (isHome) metaFile = "./assets/meta-home.html";
+
+  // Load meta tags and main content
+  await loadMetaTags("./assets/meta-base.html", metaFile);
+  await loadHTML("navbar-container", "./assets/navbar.html");
+  await loadHTML("footer-container", "./assets/footer.html");
+
+  // Always load content from partials
+  if (isHome) {
+    await loadHTML("main-content", "./partials/home.html");
+  } else {
+    await loadHTML("main-content", `./partials/${page}`);
+  }
+
+  // Re-initialize mobile nav after navbar is loaded
+  setTimeout(initMobileNav, 100);
+
+  // Trigger animations after content is loaded
+  setTimeout(triggerAnimations, 150);
+
+  // Reinitialize Prism syntax highlighting
+  setTimeout(initPrismHighlighting, 200);
+
+  // Update active nav link
+  setTimeout(() => {
+    const navLinks_a = document.querySelectorAll(".nav-links a");
+    navLinks_a.forEach((link) => {
+      link.classList.remove("active");
+      const linkHref = link.getAttribute("href");
+      if (linkHref) {
+        if (
+          isHome &&
+          (linkHref === "index.html" ||
+            linkHref === "./index.html" ||
+            linkHref === "/")
+        ) {
+          link.classList.add("active");
+        } else if (
+          !isHome &&
+          linkHref.replace("./", "") === page.replace("./", "")
+        ) {
+          link.classList.add("active");
+        }
+      }
+    });
+  }, 200);
+
+  // Update hash if not popstate
+  if (!isPopState) {
+    if (isHome) {
+      window.location.hash = "";
+    } else {
+      window.location.hash = page.replace(".html", "");
+    }
+  }
+
+  // Reinitialize Prism.js syntax highlighting
+  initPrismHighlighting();
+}
+
+// Function to trigger animations
+function triggerAnimations() {
+  // Reset and trigger section animations
+  const sections = document.querySelectorAll("section");
+  sections.forEach((section, index) => {
+    // Reset animation
+    section.style.opacity = "0";
+    section.style.animation = "none";
+
+    // Trigger animation with delay
+    setTimeout(() => {
+      section.style.animation = `fadeInUp 0.8s ease forwards`;
+      section.style.animationDelay = `${0.2 + index * 0.2}s`;
+    }, 50);
+  });
+}
+
+// Function to reinitialize Prism.js syntax highlighting
+function initPrismHighlighting() {
+  // Check if Prism is available
+  if (typeof Prism !== "undefined") {
+    // Re-highlight all code blocks
+    Prism.highlightAll();
+    console.log("Prism syntax highlighting reinitialized");
+  } else {
+    console.warn("Prism.js not available");
   }
 }
+
+// Initialize the website
+async function initWebsite() {
+  // Load navbar and footer first
+  await loadHTML("navbar-container", "./assets/navbar.html");
+  await loadHTML("footer-container", "./assets/footer.html");
+
+  // Check for hash routing
+  const hash = window.location.hash.replace(/^#\/?/, "");
+  if (hash) {
+    // Load specific page from hash
+    await spaNavigate(hash, true);
+  } else {
+    // Load home page by default
+    await loadHTML("main-content", "./partials/home.html");
+  }
+
+  // Initialize mobile navigation
+  setTimeout(initMobileNav, 100);
+
+  // Trigger animations for initial load
+  setTimeout(triggerAnimations, 150);
+
+  // Initialize Prism syntax highlighting for initial load
+  setTimeout(initPrismHighlighting, 200);
+}
+
+// Hash-based routing: load correct partial on hash change
+window.addEventListener("hashchange", function () {
+  const hash = window.location.hash.replace(/^#\/?/, "");
+  spaNavigate(hash, true);
+});
+
+// Make initMobileNav global for external calls
+window.initMobileNav = initMobileNav;
+
+// Initialize everything when DOM is ready
+document.addEventListener("DOMContentLoaded", initWebsite);
+
+// Set active navigation link based on current page (with delay for navbar loading)
+setTimeout(() => {
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  const navLinks_a = document.querySelectorAll(".nav-links a");
+
+  navLinks_a.forEach((link) => {
+    link.classList.remove("active");
+    const href = link.getAttribute("href");
+    if (
+      href === currentPage ||
+      (currentPage === "" && href === "index.html") ||
+      (currentPage === "index.html" && href === "index.html") ||
+      (currentPage === "about.html" && href === "about.html") ||
+      (currentPage === "architecture.html" && href === "architecture.html") ||
+      (currentPage === "blog.html" && href === "blog.html")
+    ) {
+      link.classList.add("active");
+    }
+  });
+}, 500);

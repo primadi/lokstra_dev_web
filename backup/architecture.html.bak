@@ -72,73 +72,7 @@
 
         <div class="arch-card">
           <div class="arch-icon">🎧</div>
-          <h3>Listener Service</h3>
-          <p>
-            Pluggable listener system dengan support multiple protocols. 
-            Dari HTTP/1.1 hingga HTTP/3 dengan TLS/mTLS.
-          </p>
-          <ul>
-            <li>Net/HTTP & FastHTTP listeners</li>
-            <li>Secure HTTPS/TLS/mTLS support</li>
-            <li>HTTP/3 & Unix Socket support</li>
-            <li>Configuration-driven selection</li>
-          </ul>
-        </div>
-
-        <div class="arch-card">
-          <div class="arch-icon">🔌</div>
-          <h3>Plugin System</h3>
-          <p>
-            Dynamic plugin loading dengan permission-based security. 
-            Support untuk modules, services, dan middleware.
-          </p>
-          <ul>
-            <li>Dynamic loading (.so files)</li>
-            <li>Granular permission control</li>
-            <li>Service access whitelisting</li>
-            <li>Interface based contracts</li>
-          </ul>
-        </div>
-
-        <div class="arch-card">
-          <div class="arch-icon">⚙️</div>
-          <h3>Configuration</h3>
-          <p>
-            YAML-based configuration dengan environment variables, 
-            validation, dan hot-reload capabilities.
-          </p>
-          <ul>
-            <li>Environment variable substitution</li>
-            <li>Validation & defaults</li>
-            <li>Multi-environment support</li>
-            <li>File watching (planned)</li>
-          </ul>
-        </div>
-
-        <div class="arch-card">
-          <div class="arch-icon">📊</div>
-          <h3>Observability</h3>
-          <p>
-            Monitoring dan debugging layer dengan structured logging, 
-            metrics collection, dan health checks.
-          </p>
-          <ul>
-            <li>Structured logging</li>
-            <li>HTTP access logging</li>
-            <li>Health check endpoints (planned)</li>
-            <li>Metrics collection (planned)</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>🔄 Request Lifecycle</h2>
-      <div class="flow-diagram">
-        <h3>HTTP Request Flow</h3>
-        <div class="flow-steps">
-          <div class="flow-step">
-            <h4>1. Request</h4>
+<!-- moved to backup, see partials/architecture.html for SPA content -->
             <p>HTTP request masuk melalui listener</p>
           </div>
           <div class="flow-arrow">→</div>
