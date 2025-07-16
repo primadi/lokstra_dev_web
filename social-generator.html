@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Image Generator - Lokstra</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .canvas-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        #socialCanvas {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+        .controls {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: 600;
+        }
+        .btn:hover {
+            background: #0052a3;
+        }
+        .info {
+            background: #065f46;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Social Media Image Generator</h1>
+        <p>Generate optimized social media image untuk WhatsApp/Facebook preview</p>
+        
+        <div class="info">
+            <h4>📏 Recommended Sizes:</h4>
+            <ul>
+                <li><strong>Facebook/WhatsApp:</strong> 1200 x 630 pixels (1.91:1 ratio)</li>
+                <li><strong>Twitter:</strong> 1200 x 600 pixels (2:1 ratio)</li>
+                <li><strong>LinkedIn:</strong> 1200 x 627 pixels</li>
+            </ul>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="socialCanvas" width="1200" height="630"></canvas>
+        </div>
+
+        <div class="controls">
+            <h3>🛠️ Controls:</h3>
+            <button class="btn" onclick="generateImage()">🎨 Generate Image</button>
+            <button class="btn" onclick="downloadImage()">📥 Download PNG</button>
+            <button class="btn" onclick="copyDataURL()">📋 Copy Data URL</button>
+        </div>
+
+        <div class="info">
+            <h4>📋 Usage Instructions:</h4>
+            <ol>
+                <li>Click "Generate Image" untuk create social media image</li>
+                <li>Download image dan upload ke <code>/assets/social-preview.png</code></li>
+                <li>Update meta tags untuk gunakan image baru</li>
+                <li>Test di WhatsApp dengan URL cache buster</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('socialCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function generateImage() {
+            // Clear canvas
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#0f172a');
+            gradient.addColorStop(1, '#1e293b');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // Blue accent
+            ctx.fillStyle = '#0066cc';
+            ctx.fillRect(0, 0, 8, 630);
+
+            // Main title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 72px Inter, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Lokstra Framework', 600, 200);
+
+            // Subtitle
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '48px Inter, Arial, sans-serif';
+            ctx.fillText('Go Backend Framework', 600, 280);
+
+            // Description
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '32px Inter, Arial, sans-serif';
+            ctx.fillText('Simple. Scalable. Structured.', 600, 340);
+
+            // Features
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '28px Inter, Arial, sans-serif';
+            ctx.textAlign = 'left';
+            
+            const features = [
+                '🚀 High Performance',
+                '🪶 Lightweight',
+                '🔧 Plugin System',
+                '🎯 Production Ready'
+            ];
+
+            features.forEach((feature, index) => {
+                const x = 200 + (index % 2) * 400;
+                const y = 450 + Math.floor(index / 2) * 60;
+                ctx.fillText(feature, x, y);
+            });
+
+            // URL
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 36px Inter, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('lokstra.dev', 600, 580);
+
+            console.log('✅ Social media image generated!');
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'lokstra-social-preview.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            console.log('📥 Image downloaded!');
+        }
+
+        function copyDataURL() {
+            const dataURL = canvas.toDataURL();
+            navigator.clipboard.writeText(dataURL).then(() => {
+                alert('📋 Data URL copied to clipboard!');
+            });
+        }
+
+        // Generate image on load
+        window.addEventListener('load', () => {
+            generateImage();
+        });
+    </script>
+</body>
+</html>
