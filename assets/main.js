@@ -248,6 +248,7 @@ function initPrismHighlighting() {
   // Check if Prism is available
   if (typeof Prism !== "undefined") {
     // Re-highlight all code blocks
+    // eslint-disable-next-line no-undef
     Prism.highlightAll();
     console.log("Prism syntax highlighting reinitialized");
   } else {
@@ -373,6 +374,7 @@ function initLanguageSwitcher() {
           .forEach((b) => b.classList.add("active"));
 
         // Store preference
+        // eslint-disable-next-line no-undef
         localStorage.setItem("preferred-language", lang);
 
         // Close mobile menu if open
@@ -385,6 +387,7 @@ function initLanguageSwitcher() {
   });
 
   // Set initial language from localStorage or default to 'en'
+  // eslint-disable-next-line no-undef
   const savedLang = localStorage.getItem("preferred-language") || "en";
   document
     .querySelectorAll(`[data-lang="${savedLang}"]`)
