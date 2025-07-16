@@ -102,6 +102,48 @@ Website dioptimalkan untuk mobile devices:
 - Touch-friendly buttons dan links
 - Optimal typography scaling
 
+## 📱 WhatsApp Preview Setup
+
+### Problem: WhatsApp tidak show preview
+Jika copy-paste URL di WhatsApp tidak keluar preview, ikuti langkah berikut:
+
+#### 1. Deploy ke GitHub Pages
+```bash
+# Deploy dengan script otomatis
+npm run deploy
+
+# Atau manual
+git add .
+git commit -m "Update meta tags for social sharing"
+git push origin main
+```
+
+#### 2. Test URL Production
+```bash
+# Test meta tags validation
+npm run validate:og    # Open Graph validator
+npm run validate:fb    # Facebook debugger  
+npm run validate:twitter # Twitter card validator
+
+# Test local meta tags
+npm run test:meta      # Buka meta-test.html
+```
+
+#### 3. WhatsApp Testing
+1. Pastikan website sudah deploy ke: `https://lokstra.dev/`
+2. Copy URL tersebut
+3. Paste di WhatsApp chat
+4. WhatsApp akan generate preview card dengan:
+   - ✅ Title: "Lokstra Framework - Go Backend Framework"
+   - ✅ Description: "Framework backend Go yang simpel, scalable, dan terstruktur"
+   - ✅ Image: Lokstra logo
+   - ✅ URL: lokstra.dev link
+
+#### 4. Meta Tags Debug
+- File `meta-test.html` untuk testing meta tags
+- File `index-production.html` dengan static meta tags
+- Meta tags tersedia di `assets/meta-*.html` untuk dynamic loading
+
 ## 🔧 VS Code Setup
 
 File `.vscode/launch.json` sudah dikonfigurasi untuk:

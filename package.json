@@ -11,7 +11,12 @@
     "serve:node": "npx http-server . -p 8000 -c-1",
     "serve:php": "php -S localhost:8000",
     "dev": "python -m http.server 8000",
-    "start": "python -m http.server 8000"
+    "start": "python -m http.server 8000",
+    "deploy": "powershell -ExecutionPolicy Bypass -File ./deploy.bat",
+    "test:meta": "start http://localhost:8000/meta-test.html",
+    "validate:og": "start https://www.opengraph.xyz/",
+    "validate:fb": "start https://developers.facebook.com/tools/debug/",
+    "validate:twitter": "start https://cards-dev.twitter.com/validator"
   },
   "keywords": [
     "lokstra",

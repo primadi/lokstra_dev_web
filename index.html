@@ -1,7 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <!-- Meta tags will be loaded dynamically -->
+  <!-- Static Meta tags for social sharing -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="./assets/logo.png" type="image/png" />
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Lokstra Framework - Simple. Scalable. Structured. Framework backend Go yang simpel, scalable, dan terstruktur." />
+  <title>Lokstra Framework - Go Backend Framework</title>
+  <meta name="author" content="Primadi Setiawan" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="Indonesian" />
+  <meta name="keywords" content="go, golang, framework, backend, api, microservice, lokstra, indonesia" />
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://lokstra.dev/" />
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lokstra.dev/" />
+  <meta property="og:title" content="Lokstra Framework - Go Backend Framework" />
+  <meta property="og:description" content="Framework backend Go yang simpel, scalable, dan terstruktur. Bangun API dan microservice dengan mudah menggunakan Lokstra." />
+  <meta property="og:image" content="https://lokstra.dev/assets/logo.png" />
+  <meta property="og:image:width" content="400" />
+  <meta property="og:image:height" content="400" />
+  <meta property="og:image:alt" content="Lokstra Framework Logo" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:secure_url" content="https://lokstra.dev/assets/logo.png" />
+  <meta property="og:site_name" content="Lokstra Framework" />
+  <meta property="og:locale" content="id_ID" />
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://lokstra.dev/" />
+  <meta name="twitter:title" content="Lokstra Framework - Go Backend Framework" />
+  <meta name="twitter:description" content="Framework backend Go yang simpel, scalable, dan terstruktur. Bangun API dan microservice dengan mudah menggunakan Lokstra." />
+  <meta name="twitter:image" content="https://lokstra.dev/assets/logo.png" />
+  <meta name="twitter:image:alt" content="Lokstra Framework Logo" />
+  <meta name="twitter:site" content="@lokstra_dev" />
+  
+  <!-- WhatsApp and Telegram specific -->
+  <meta property="article:author" content="Primadi Setiawan" />
+  <meta property="article:publisher" content="Lokstra Framework" />
+  <meta name="theme-color" content="#0066cc" />
+
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="stylesheet" href="./assets/style.css" />
@@ -211,9 +255,8 @@ func main() {
   <div id="footer-container"></div>
 
   <script>
-    // Load meta tags, navbar and footer
+    // Load navbar and footer only (meta tags are now static)
     document.addEventListener('DOMContentLoaded', async function() {
-      await loadMetaTags('./assets/meta-base.html', './assets/meta-home.html');
       await loadHTML('navbar-container', './assets/navbar.html');
       await loadHTML('footer-container', './assets/footer.html');
     });
