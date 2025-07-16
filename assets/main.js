@@ -475,9 +475,15 @@ function getLocalVisitorCount() {
     count += Math.floor(Math.random() * 3) + 1; // Add 1-3 to simulate organic growth
     localStorage.setItem(key, count.toString());
     localStorage.setItem(dateKey, today);
-    console.log("Visitor counter: new day visit detected, incremented to:", count);
+    console.log(
+      "Visitor counter: new day visit detected, incremented to:",
+      count
+    );
   } else {
-    console.log("Visitor counter: same day visit, returning existing count:", count);
+    console.log(
+      "Visitor counter: same day visit, returning existing count:",
+      count
+    );
   }
 
   return count;
