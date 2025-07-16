@@ -388,16 +388,27 @@ function closeMobileMenu() {
 // Initialize visitor counter
 function initVisitorCounter() {
   const visitorElement = document.getElementById("visitor-count");
-  if (!visitorElement) return;
+  if (!visitorElement) {
+    console.log("Visitor counter: element not found");
+    return;
+  }
+
+  console.log("Visitor counter: initializing...");
 
   // Try to fetch visitor count from multiple sources
   fetchVisitorCount()
     .then((count) => {
+      console.log("Visitor counter: API success, count:", count);
       visitorElement.textContent = formatNumber(count);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(
+        "Visitor counter: API failed, using localStorage fallback",
+        error
+      );
       // Fallback to localStorage counter
       const localCount = getLocalVisitorCount();
+      console.log("Visitor counter: localStorage count:", localCount);
       visitorElement.textContent = formatNumber(localCount);
     });
 }
@@ -405,16 +416,20 @@ function initVisitorCounter() {
 // Fetch visitor count from external API
 async function fetchVisitorCount() {
   try {
+    console.log("Visitor counter: attempting API call...");
     // Try hitcounter.pythonanywhere.com (free service)
     const response = await fetch(
       "https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Flokstra.dev&countColor=%2338bdf8"
     );
+    console.log("Visitor counter: API response status:", response.status);
     if (response.ok) {
       const data = await response.json();
+      console.log("Visitor counter: API response data:", data);
       return data.count || 0;
     }
-    throw new Error("API failed");
+    throw new Error("API failed with status: " + response.status);
   } catch (error) {
+    console.log("Visitor counter: API error:", error);
     // Fallback to localStorage
     throw error;
   }
@@ -431,6 +446,9 @@ function getLocalVisitorCount() {
     count += 1;
     localStorage.setItem(key, count.toString());
     sessionStorage.setItem(sessionKey, "visited");
+    console.log("Visitor counter: new visit detected, incremented to:", count);
+  } else {
+    console.log("Visitor counter: returning existing count:", count);
   }
 
   return count;
