@@ -161,6 +161,19 @@ async function spaNavigate(route, isPopState) {
     setActiveNavigation(page, isHome);
   }, 200);
 
+  // Initialize visitor counter for home page
+  if (isHome) {
+    setTimeout(initVisitorCounter, 250);
+  }
+
+  // Also check for visitor counter on any page
+  setTimeout(() => {
+    const visitorElement = document.getElementById("visitor-count");
+    if (visitorElement && !visitorElement.textContent.match(/^\d/)) {
+      initVisitorCounter();
+    }
+  }, 300);
+
   // Update hash if not popstate
   if (!isPopState) {
     if (isHome) {
@@ -499,5 +512,4 @@ function formatNumber(num) {
   return num.toString();
 }
 
-// Initialize visitor counter on DOMContentLoaded
-document.addEventListener("DOMContentLoaded", initVisitorCounter);
+

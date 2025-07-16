@@ -25,6 +25,7 @@ export default [
         console: "readonly",
         setTimeout: "readonly",
         fetch: "readonly",
+        localStorage: "readonly",
         // Custom globals from our application
         loadHTML: "readonly",
         loadMetaTags: "readonly",
