@@ -77,6 +77,77 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize mobile nav after a small delay to ensure navbar is loaded
   setTimeout(initMobileNav, 100);
 
+  // Make initMobileNav global so it can be called again after navbar is loaded dynamically
+  window.initMobileNav = function () {
+    const navToggle = document.querySelector(".nav-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    const navOverlay = document.querySelector(".nav-overlay");
+    const body = document.body;
+
+    if (navToggle && navLinks) {
+      // Remove old event listeners (prevent double binding)
+      navToggle.replaceWith(navToggle.cloneNode(true));
+      const newNavToggle = document.querySelector(".nav-toggle");
+
+      // Toggle mobile menu
+      newNavToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMobileMenu();
+      });
+
+      // Close menu when clicking on overlay
+      if (navOverlay) {
+        navOverlay.onclick = closeMobileMenu;
+      }
+
+      // Close mobile menu when clicking on a link
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.onclick = closeMobileMenu;
+      });
+
+      // Close menu with escape key
+      document.onkeydown = function (e) {
+        if (e.key === "Escape") closeMobileMenu();
+      };
+
+      function toggleMobileMenu() {
+        const isActive = navLinks.classList.contains("active");
+        if (isActive) {
+          closeMobileMenu();
+        } else {
+          openMobileMenu();
+        }
+      }
+
+      function openMobileMenu() {
+        navLinks.classList.add("active");
+        if (navOverlay) navOverlay.classList.add("active");
+        body.classList.add("menu-open");
+        newNavToggle.innerHTML = "✕";
+      }
+
+      function closeMobileMenu() {
+        navLinks.classList.remove("active");
+        if (navOverlay) navOverlay.classList.remove("active");
+        body.classList.remove("menu-open");
+        newNavToggle.innerHTML = "☰";
+      }
+
+      // Ensure menu is closed on window resize
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 768) {
+          closeMobileMenu();
+        }
+      });
+    }
+  };
+
+  // First initialization after DOMContentLoaded
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(window.initMobileNav, 100);
+  });
+
   // Set active navigation link based on current page (with delay for navbar loading)
   setTimeout(() => {
     const currentPage =
