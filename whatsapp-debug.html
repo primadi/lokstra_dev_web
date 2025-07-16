@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Preview Debugger - Lokstra Framework</title>
+    <link rel="stylesheet" href="./assets/style.css">
+    <style>
+        .debugger-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .test-section {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--accent);
+        }
+        .url-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            background: #2d3748;
+            color: white;
+            font-family: monospace;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .status.success { background: #065f46; border-left: 4px solid #10b981; }
+        .status.warning { background: #92400e; border-left: 4px solid #f59e0b; }
+        .status.error { background: #7f1d1d; border-left: 4px solid #ef4444; }
+        
+        .meta-preview {
+            background: #2d3748;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid #4a5568;
+        }
+        .preview-card {
+            max-width: 400px;
+            margin: 1rem auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            color: #1a202c;
+        }
+        .preview-image {
+            width: 100%;
+            height: 200px;
+            background: #f7fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .preview-content {
+            padding: 1rem;
+        }
+        .preview-title {
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        .preview-description {
+            color: #4a5568;
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .preview-url {
+            color: #2d3748;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    
+    <div class="debugger-container">
+        <header style="text-align: center; margin-bottom: 2rem;">
+            <h1>🔍 WhatsApp Preview Debugger</h1>
+            <p>Tool untuk test dan debug social media preview untuk Lokstra Framework</p>
+        </header>
+
+        <div class="test-section">
+            <h2>🎯 Quick Test</h2>
+            <p>Test URL utama Lokstra Framework:</p>
+            <input type="text" class="url-input" id="testUrl" value="https://lokstra.dev/" readonly>
+            <div class="btn-group">
+                <button class="btn primary" onclick="testWhatsApp()">📱 Test WhatsApp</button>
+                <button class="btn secondary" onclick="testFacebook()">👥 Facebook Debugger</button>
+                <button class="btn secondary" onclick="testTwitter()">🐦 Twitter Validator</button>
+                <button class="btn secondary" onclick="testOpenGraph()">🔗 Open Graph Preview</button>
+            </div>
+            
+            <div id="status" class="status" style="display: none;"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 Meta Tags Status</h2>
+            <div class="meta-preview">
+                <h4>Current Meta Tags:</h4>
+                <ul>
+                    <li><strong>Title:</strong> Lokstra Framework - Go Backend Framework</li>
+                    <li><strong>Description:</strong> Framework backend Go yang simpel, scalable, dan terstruktur</li>
+                    <li><strong>Image:</strong> https://lokstra.dev/assets/logo.png</li>
+                    <li><strong>URL:</strong> https://lokstra.dev/</li>
+                    <li><strong>Type:</strong> website</li>
+                    <li><strong>Locale:</strong> id_ID</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>👁️ Preview Simulation</h2>
+            <p>Simulasi tampilan preview di social media:</p>
+            <div class="preview-card">
+                <div class="preview-image">
+                    <img src="./assets/logo.png" alt="Lokstra Logo" style="max-height: 150px; max-width: 150px;">
+                </div>
+                <div class="preview-content">
+                    <div class="preview-title">Lokstra Framework - Go Backend Framework</div>
+                    <div class="preview-description">Framework backend Go yang simpel, scalable, dan terstruktur. Bangun API dan microservice dengan mudah menggunakan Lokstra.</div>
+                    <div class="preview-url">lokstra.dev</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🛠️ Troubleshooting</h2>
+            <h4>Jika preview tidak muncul di WhatsApp:</h4>
+            <ol>
+                <li><strong>Cache Issue:</strong> WhatsApp mungkin cache URL lama. Tunggu 24 jam atau gunakan parameter query: <code>?v=2025</code></li>
+                <li><strong>Image Access:</strong> Pastikan logo accessible di: <a href="https://lokstra.dev/assets/logo.png" target="_blank">https://lokstra.dev/assets/logo.png</a></li>
+                <li><strong>Meta Tags:</strong> Meta tags sudah static di HTML (tidak dynamic loading)</li>
+                <li><strong>SSL Certificate:</strong> Domain menggunakan HTTPS dan SSL valid</li>
+            </ol>
+
+            <h4>Alternative URLs untuk testing:</h4>
+            <div class="btn-group">
+                <button class="btn outline" onclick="copyUrl('https://lokstra.dev/')">📋 Main URL</button>
+                <button class="btn outline" onclick="copyUrl('https://lokstra.dev/?v=2025')">📋 Cache Buster</button>
+                <button class="btn outline" onclick="copyUrl('https://lokstra.dev/meta-test.html')">📋 Test Page</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 Validation Results</h2>
+            <div id="validationResults">
+                <p>Klik tombol validation di atas untuk melihat hasil...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script src="./assets/main.js"></script>
+    <script>
+        function showStatus(message, type = 'success') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        function testWhatsApp() {
+            const url = document.getElementById('testUrl').value;
+            showStatus('💡 Tip: Copy URL dan paste di WhatsApp chat untuk test preview', 'warning');
+            copyUrl(url);
+        }
+
+        function testFacebook() {
+            const url = document.getElementById('testUrl').value;
+            window.open(`https://developers.facebook.com/tools/debug/?q=${encodeURIComponent(url)}`, '_blank');
+            showStatus('🔍 Membuka Facebook Sharing Debugger...', 'success');
+        }
+
+        function testTwitter() {
+            const url = document.getElementById('testUrl').value;
+            window.open(`https://cards-dev.twitter.com/validator`, '_blank');
+            showStatus('🐦 Membuka Twitter Card Validator...', 'success');
+        }
+
+        function testOpenGraph() {
+            const url = document.getElementById('testUrl').value;
+            window.open(`https://www.opengraph.xyz/?url=${encodeURIComponent(url)}`, '_blank');
+            showStatus('🔗 Membuka Open Graph Preview...', 'success');
+        }
+
+        function copyUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showStatus(`📋 URL copied: ${url}`, 'success');
+            }).catch(() => {
+                showStatus('❌ Failed to copy URL', 'error');
+            });
+        }
+
+        // Load components
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadHTML('navbar-container', './assets/navbar.html');
+            await loadHTML('footer-container', './assets/footer.html');
+        });
+    </script>
+</body>
+</html>
