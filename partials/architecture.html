@@ -3,18 +3,396 @@
     <h1>Architecture</h1>
     <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto;">
       Desain arsitektur Lokstra yang modular, scalable, dan mudah dipahami. 
-      Built with modern Go practices dan design patterns yang proven.
+      Dibangun dengan praktik Go modern dan design patterns yang terbukti.
     </p>
   </section>
+
   <section class="content-section">
     <h2>🏗️ Design Philosophy</h2>
+    <p>
+      Lokstra dibangun dengan filosofi <strong>"Convention over Configuration"</strong> namun tetap memberikan 
+      flexibility untuk customization. Framework ini mengadopsi prinsip-prinsip modern software architecture:
+    </p>
     <ul class="feature-list">
       <li><strong>Modular Design</strong> - Setiap komponen independen dan dapat digunakan secara terpisah</li>
       <li><strong>Plugin Architecture</strong> - Extensible melalui .so plugins untuk functionality tambahan</li>
       <li><strong>Configuration Driven</strong> - Semua konfigurasi terpusat dalam YAML files</li>
-      <li><strong>Zero Dependencies</strong> - Core framework tidak memerlukan external dependencies</li>
+      <li><strong>Minimal Dependencies</strong> - Hanya menggunakan dependencies berkualitas tinggi (httprouter, fasthttp, decimal shopspring)</li>
       <li><strong>Performance First</strong> - Dioptimalkan untuk high throughput dan low latency</li>
       <li><strong>Developer Experience</strong> - API yang intuitive dan debugging yang mudah</li>
     </ul>
+  </section>
+
+  <section>
+    <h2>🔧 Core Components</h2>
+    <div class="architecture-grid">
+      <div class="arch-card">
+        <div class="arch-icon">🌐</div>
+        <h3>HTTP Router Service</h3>
+        <p>
+          Pluggable HTTP router system dengan support untuk httprouter dan ServeMux. 
+          Easy switching via configuration.
+        </p>
+        <ul>
+          <li>Multiple router backends</li>
+          <li>Consistent API across implementations</li>
+          <li>Fast route matching & parameter binding</li>
+          <li>Middleware pipeline support</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">🔗</div>
+        <h3>Context System</h3>
+        <p>
+          Centralized RegistrationContext untuk service registration, 
+          middleware management, dan dependency injection.
+        </p>
+        <ul>
+          <li>Service factory & module registration</li>
+          <li>SetService/GetService untuk DI</li>
+          <li>Handler & middleware registration</li>
+          <li>Permission-based access control</li>
+        </ul>
+      </div>
+
+      <div class="arch-card">
+        <div class="arch-icon">🎧</div>
+        <h3>Listener Service</h3>
+        <p>
+          Pluggable listener system dengan support untuk berbagai protokol 
+          dan optimisasi performance.
+        </p>
+        <ul>
+          <li>HTTP/1.1, HTTP/2, HTTP/3 support</li>
+          <li>FastHTTP untuk high performance</li>
+          <li>Unix Socket support</li>
+          <li>Graceful shutdown handling</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔄 Request Flow</h2>
+    <div class="flow-diagram">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <h4>1. Listener</h4>
+          <p>HTTP request masuk melalui listener</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <h4>2. Router</h4>
+          <p>Route matching & parameter extraction</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <h4>3. Middleware</h4>
+          <p>Pre-processing chain execution</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <h4>4. Handler</h4>
+          <p>Business logic execution</p>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <h4>5. Response</h4>
+          <p>Response formatting & return</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🏗️ Registration Patterns</h2>
+    <div class="architecture-grid">
+      <div class="arch-card">
+        <div class="arch-icon">⚙️</div>
+        <h3>Services</h3>
+        <p>Dependency injection patterns</p>
+        <ul class="feature-list">
+          <li><strong>Factory</strong> - RegisterServiceFactory()</li>
+          <li><strong>Module</strong> - RegisterServiceModule()</li>
+          <li><strong>Direct</strong> - SetService()</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">🔗</div>
+        <h3>Middleware</h3>
+        <p>Cross-cutting concerns</p>
+        <ul class="feature-list">
+          <li><strong>Factory</strong> - RegisterMiddlewareFactory()</li>
+          <li><strong>Module</strong> - RegisterMiddlewareModule()</li>
+          <li><strong>Function</strong> - RegisterMiddlewareFunc()</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">🎯</div>
+        <h3>Handlers</h3>
+        <p>Route handling</p>
+        <ul class="feature-list">
+          <li><strong>Registration</strong> - RegisterHandler()</li>
+          <li><strong>Retrieval</strong> - GetHandler()</li>
+          <li><strong>Routing</strong> - Automatic binding</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">🔌</div>
+        <h3>Plugins</h3>
+        <p>Dynamic modules</p>
+        <ul class="feature-list">
+          <li><strong>Internal</strong> - RegisterModule()</li>
+          <li><strong>External</strong> - RegisterPluginModule()</li>
+          <li><strong>Security</strong> - Permission control</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>⚡ Performance Considerations</h2>
+    <div class="comparison-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Current Implementation</th>
+            <th>Performance Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Router</strong></td>
+            <td>httprouter dengan radix tree</td>
+            <td>Fast O(log n) route matching saat menggunakan httprouter</td>
+          </tr>
+          <tr>
+            <td><strong>Request Context</strong></td>
+            <td>New context per request</td>
+            <td>Standard Go approach, tidak ada pooling saat ini</td>
+          </tr>
+          <tr>
+            <td><strong>Middleware</strong></td>
+            <td>Priority-based ordering</td>
+            <td>Middleware diurutkan berdasarkan priority + usage order</td>
+          </tr>
+          <tr>
+            <td><strong>Memory Management</strong></td>
+            <td>Standard Go GC</td>
+            <td>Belum ada optimisasi buffer pooling</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="performance-notes">
+      <h4>📝 Performance Notes:</h4>
+      <ul>
+        <li><strong>Router Performance</strong> - Bergantung pada router backend yang dipilih (httprouter vs ServeMux)</li>
+        <li><strong>Middleware Priority</strong> - Middleware dengan priority rendah dijalankan lebih awal meskipun didaftarkan belakangan</li>
+        <li><strong>Memory Optimization</strong> - Belum ada object pooling atau buffer management khusus</li>
+        <li><strong>Future Optimizations</strong> - Context pooling dan buffer management dalam roadmap</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2>🚀 Extensibility & Ecosystem</h2>
+    <p>
+      Lokstra dirancang untuk mempercepat development backend melalui <strong>ecosystem yang kaya</strong> 
+      dan <strong>extensibility yang powerful</strong>. Framework ini menyediakan building blocks siap pakai:
+    </p>
+    
+    <div class="architecture-grid">
+      <div class="arch-card">
+        <div class="arch-icon">📦</div>
+        <h3>Official Modules</h3>
+        <p>Ready-to-use modules untuk kebutuhan backend umum</p>
+        <ul class="feature-list">
+          <li><strong>Database</strong> - PostgreSQL connector ✅</li>
+          <li><strong>Cache</strong> - Redis, Memcached, In-memory (planned)</li>
+          <li><strong>Queue</strong> - RabbitMQ, Apache Kafka, NATS (planned)</li>
+          <li><strong>Storage</strong> - S3, MinIO, local filesystem (planned)</li>
+          <li><strong>Auth</strong> - JWT, OAuth2, Basic Auth (planned)</li>
+          <li><strong>Monitoring</strong> - Prometheus, Grafana integration (planned)</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">🔗</div>
+        <h3>Official Middleware</h3>
+        <p>Cross-cutting concerns yang sudah terintegrasi</p>
+        <ul class="feature-list">
+          <li><strong>CORS</strong> - Cross-origin resource sharing ✅</li>
+          <li><strong>Compression</strong> - Gzip response compression ✅</li>
+          <li><strong>Rate Limiting</strong> - Request throttling (planned)</li>
+          <li><strong>Security</strong> - CSRF, XSS protection (planned)</li>
+          <li><strong>Logging</strong> - Request/response logging (planned)</li>
+          <li><strong>Validation</strong> - Input validation & sanitization (planned)</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">⚙️</div>
+        <h3>Official Services</h3>
+        <p>Pre-built services untuk functionality umum</p>
+        <ul class="feature-list">
+          <li><strong>Email</strong> - SMTP, SendGrid, SES integration (planned)</li>
+          <li><strong>SMS</strong> - Twilio, Nexmo providers (planned)</li>
+          <li><strong>Payment</strong> - Stripe, PayPal gateways (planned)</li>
+          <li><strong>Search</strong> - Elasticsearch, Algolia (planned)</li>
+          <li><strong>Notification</strong> - Push notifications, webhooks (planned)</li>
+          <li><strong>File Processing</strong> - Image resize, PDF generation (planned)</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="performance-notes">
+      <h4>💡 Development Speed Benefits:</h4>
+      <ul>
+        <li><strong>Rapid Prototyping</strong> - Backend API siap dalam hitungan menit dengan modules yang tersedia</li>
+        <li><strong>Standard Patterns</strong> - Consistent development approach across projects</li>
+        <li><strong>Growing Ecosystem</strong> - Official modules sedang dikembangkan untuk production readiness</li>
+        <li><strong>Easy Integration</strong> - Plug-and-play architecture untuk modules yang sudah ready</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2>🆚 Mengapa Lokstra? Perbandingan Framework</h2>
+    <p>
+      Lokstra diciptakan untuk mengatasi beberapa tantangan yang sering dihadapi developer Go ketika 
+      membangun aplikasi production-ready. Berikut perbandingan dengan framework populer lainnya:
+    </p>
+    
+    <div class="comparison-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Aspek</th>
+            <th>Lokstra</th>
+            <th>Gin</th>
+            <th>Echo</th>
+            <th>Fiber</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Basic Setup</strong></td>
+            <td>YAML config + minimal code</td>
+            <td>Simple, minimal setup</td>
+            <td>Simple, minimal setup</td>
+            <td>Simple, minimal setup</td>
+          </tr>
+          <tr>
+            <td><strong>Production Ready</strong></td>
+            <td>Built-in patterns & modules</td>
+            <td>Manual integration required</td>
+            <td>Manual integration required</td>
+            <td>Manual integration required</td>
+          </tr>
+          <tr>
+            <td><strong>Configuration Management</strong></td>
+            <td>YAML + env variables + store</td>
+            <td>Manual handling (viper, dll)</td>
+            <td>Manual handling (viper, dll)</td>
+            <td>Manual handling (viper, dll)</td>
+          </tr>
+          <tr>
+            <td><strong>Plugin System</strong></td>
+            <td>Dynamic .so loading + permissions</td>
+            <td>Tidak ada built-in system</td>
+            <td>Tidak ada built-in system</td>
+            <td>Tidak ada built-in system</td>
+          </tr>
+          <tr>
+            <td><strong>Official Ecosystem</strong></td>
+            <td>Curated official modules</td>
+            <td>Community-driven packages</td>
+            <td>Community-driven packages</td>
+            <td>Community-driven packages</td>
+          </tr>
+          <tr>
+            <td><strong>Development Structure</strong></td>
+            <td>Opinionated dengan flexibility</td>
+            <td>Sangat flexible (developer choice)</td>
+            <td>Sangat flexible (developer choice)</td>
+            <td>Sangat flexible (developer choice)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>🚧 Development Status</h2>
+    <p>
+      Lokstra Framework masih dalam tahap <strong>early development</strong>. 
+      Berikut status implementasi fitur-fitur utama:
+    </p>
+    
+    <div class="architecture-grid">
+      <div class="arch-card">
+        <div class="arch-icon">✅</div>
+        <h3>Implemented</h3>
+        <ul class="feature-list">
+          <li>Basic HTTP server dengan httprouter</li>
+          <li>YAML configuration loading</li>
+          <li>Environment variable substitution</li>
+          <li>Basic middleware support</li>
+          <li>Structured logging</li>
+          <li>Graceful shutdown</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">✅</div>
+        <h3>Recently Implemented</h3>
+        <ul class="feature-list">
+          <li>Pluggable router system</li>
+          <li>Listener service abstraction</li>
+          <li>RegistrationContext enhancement</li>
+          <li>Plugin permission system</li>
+          <li>Error handling standardization</li>
+          <li>FastHTTP & HTTP/3 listeners</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">🚧</div>
+        <h3>In Progress</h3>
+        <ul class="feature-list">
+          <li>Health check system</li>
+          <li>Hot configuration reload</li>
+          <li>Advanced observability</li>
+        </ul>
+      </div>
+      
+      <div class="arch-card">
+        <div class="arch-icon">📋</div>
+        <h3>Planned</h3>
+        <ul class="feature-list">
+          <li>Service dependency injection</li>
+          <li>Advanced plugin security</li>
+          <li>Performance monitoring</li>
+          <li>Distributed tracing</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="performance-notes">
+      <h4>📝 Development Notes:</h4>
+      <ul>
+        <li><strong>Target Release</strong> - Beta version direncanakan Q3 2025</li>
+        <li><strong>Focus Area</strong> - Core framework stability dan developer experience</li>
+        <li><strong>Breaking Changes</strong> - API mungkin berubah significantly sebelum v1.0</li>
+        <li><strong>Production Use</strong> - Beta ready untuk limited production testing</li>
+      </ul>
+    </div>
   </section>
 </main>
