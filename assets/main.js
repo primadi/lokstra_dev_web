@@ -408,91 +408,11 @@ function initVisitorCounter() {
 
   console.log("Visitor counter: initializing...");
 
-  // Try real APIs only, no fake localStorage
-  fetchRealVisitorCount()
-    .then((count) => {
-      if (count && count > 0) {
-        console.log("Visitor counter: real API success, count:", count);
-        visitorElement.textContent = formatNumber(count);
-      } else {
-        console.log("Visitor counter: real API returned 0, showing 'New'");
-        visitorElement.textContent = "New"; // Honest indication for new repo
-      }
-    })
-    .catch((error) => {
-      console.log("Visitor counter: real APIs failed, showing honest message", error);
-      visitorElement.textContent = "---"; // Honest failure indication
-    });
-}
-
-// Try only real APIs for visitor counting
-async function fetchRealVisitorCount() {
-  // Method 1: Try GitHub API for real repository engagement
-  try {
-    console.log("Visitor counter: trying GitHub API for real stats...");
-    return await fetchGitHubBasedCount();
-  } catch (error) {
-    console.log("Visitor counter: GitHub API failed:", error.message);
-  }
-
-  // Method 2: Try a simple hit counter API (alternative to CountAPI)
-  try {
-    console.log("Visitor counter: trying alternative counter API...");
-    return await fetchAlternativeCounter();
-  } catch (error) {
-    console.log("Visitor counter: alternative API failed:", error.message);
-  }
-
-  // No more fake localStorage fallback
-  throw new Error("No real counter APIs available");
-}
-
-// GitHub-based visitor count (real repository engagement)
-async function fetchGitHubBasedCount() {
-  const response = await fetch(
-    "https://api.github.com/repos/primadi/lokstra_dev_web",
-    {
-      method: "GET",
-      mode: "cors",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(`GitHub API error: ${response.status}`);
-  }
-
-  const data = await response.json();
+  // Since we don't have real visitor tracking set up yet,
+  // show an honest indication
+  visitorElement.textContent = "📊"; // Analytics icon to indicate stats tracking
   
-  // Use real GitHub metrics: watchers + forks + stargazers
-  const realEngagement = (data.watchers_count || 0) + (data.forks_count || 0) + (data.stargazers_count || 0);
-  
-  console.log("Visitor counter: GitHub real engagement:", realEngagement);
-  console.log("GitHub stats:", {
-    watchers: data.watchers_count,
-    forks: data.forks_count, 
-    stars: data.stargazers_count
-  });
-  
-  return realEngagement > 0 ? realEngagement : null;
-}
-
-// Alternative real counter API (JSONPlaceholder for testing)
-async function fetchAlternativeCounter() {
-  // Use JSONPlaceholder posts count as a demo counter
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-    method: "GET",
-    mode: "cors",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Alternative API error: ${response.status}`);
-  }
-
-  const posts = await response.json();
-  const count = posts.length; // Should be 100 posts
-  
-  console.log("Visitor counter: JSONPlaceholder posts count:", count);
-  return count;
+  console.log("Visitor counter: showing analytics placeholder until real tracking is implemented");
 }
 
 // Format number with K/M suffixes
