@@ -1,63 +1,32 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <!-- Static Meta tags for social sharing -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="./assets/social-preview.png" type="image/png" />
-  
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Lokstra Framework - Simple. Scalable. Structured. Framework backend Go yang simpel, scalable, dan terstruktur." />
   <title>Lokstra Framework - Go Backend Framework</title>
-  <meta name="author" content="Primadi Setiawan" />
-  <meta name="robots" content="index, follow" />
-  <meta name="language" content="Indonesian" />
-  <meta name="keywords" content="go, golang, framework, backend, api, microservice, lokstra, indonesia" />
-  
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://lokstra.dev/" />
-  
-  <!-- Open Graph Meta Tags - WhatsApp Standard -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://lokstra.dev/" />
-  <meta property="og:title" content="Lokstra Framework - Go Backend Framework" />
-  <meta property="og:description" content="Framework backend Go yang simpel, scalable, dan terstruktur. Bangun API dan microservice dengan mudah menggunakan Lokstra." />
-  <meta property="og:site_name" content="Lokstra Framework" />
-  
-  <!-- Basic image meta - using absolute URL for WhatsApp -->
-  <meta property="og:image" content="https://lokstra.dev/assets/social-preview.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:type" content="image/png" />
-  
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Lokstra Framework - Go Backend Framework" />
-  <meta name="twitter:description" content="Framework backend Go yang simpel, scalable, dan terstruktur. Bangun API dan microservice dengan mudah menggunakan Lokstra." />
-  <meta name="twitter:image" content="https://lokstra.dev/assets/social-preview.png" />
-  
-  <!-- WhatsApp and Telegram specific -->
-  <meta property="article:author" content="Primadi Setiawan" />
-  <meta property="article:publisher" content="Lokstra Framework" />
-  <meta name="theme-color" content="#0066cc" />
-
-  <!-- Stylesheets -->
+  <link rel="icon" href="./assets/social-preview.png" type="image/png" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
   <link rel="stylesheet" href="./assets/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="./assets/main.js"></script>
-  <style>
-    /* Index.html specific styles */
-    main {
-      max-width: 800px;
-    }
-    .target-users {
-      display: grid;
-      grid-template-columns: 1fr;
-      max-width: 800px;
-      margin: 1.5rem auto;
+  <script src="./assets/main.js" defer></script>
+</head>
+<body>
+  <div id="navbar-container"></div>
+  <div id="main-content"></div>
+  <div id="footer-container"></div>
+  <script>
+    // Initial SPA load: home page
+    document.addEventListener('DOMContentLoaded', async function() {
+      await loadHTML('navbar-container', './assets/navbar.html');
+      await loadHTML('footer-container', './assets/footer.html');
+      await loadHTML('main-content', './partials/home.html');
+      if (window.initMobileNav) window.initMobileNav();
+    });
+  </script>
+</body>
+</html>
       gap: 1rem;
     }
     @media (min-width: 768px) {

@@ -101,9 +101,59 @@ document.addEventListener("DOMContentLoaded", function () {
         navOverlay.onclick = closeMobileMenu;
       }
 
-      // Close mobile menu when clicking on a link
+      // SPA navigation: intercept navbar link clicks
       document.querySelectorAll(".nav-links a").forEach((link) => {
-        link.onclick = closeMobileMenu;
+        link.onclick = function (e) {
+          // Only handle internal links (not external)
+          const href = link.getAttribute("href");
+          if (href && !href.startsWith("http")) {
+            e.preventDefault();
+            closeMobileMenu();
+            spaNavigate(href);
+          }
+        };
+      });
+      // SPA navigation: load page content and update history
+      async function spaNavigate(href, isPopState) {
+        // Map page to meta file if needed
+        let metaFile = "./assets/meta-base.html";
+        if (href === "about.html") metaFile = "./assets/meta-about.html";
+        else if (href === "architecture.html")
+          metaFile = "./assets/meta-architecture.html";
+        else if (href === "index.html") metaFile = "./assets/meta-home.html";
+        // Add more mappings as needed
+
+        // Load meta tags and main content
+        await loadMetaTags("./assets/meta-base.html", metaFile);
+        await loadHTML("navbar-container", "./assets/navbar.html");
+        await loadHTML("footer-container", "./assets/footer.html");
+        await loadHTML("main-content", href); // assumes main content is in <div id="main-content"></div>
+
+        // Update active nav link
+        setTimeout(() => {
+          const currentPage = href;
+          const navLinks_a = document.querySelectorAll(".nav-links a");
+          navLinks_a.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === currentPage) {
+              link.classList.add("active");
+            }
+          });
+        }, 200);
+
+        // Push state if not popstate
+        if (!isPopState) {
+          history.pushState({ href }, "", href);
+        }
+      }
+
+      // Handle browser back/forward
+      window.addEventListener("popstate", function (e) {
+        const href =
+          e.state && e.state.href
+            ? e.state.href
+            : window.location.pathname.split("/").pop() || "index.html";
+        spaNavigate(href, true);
       });
 
       // Close menu with escape key
