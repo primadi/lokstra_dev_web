@@ -408,52 +408,45 @@ function initVisitorCounter() {
 
   console.log("Visitor counter: initializing...");
 
-  // Always use localStorage as the primary source
-  const localCount = getLocalVisitorCount();
-  console.log("Visitor counter: localStorage count:", localCount);
-  visitorElement.textContent = formatNumber(localCount);
+  // Use CountAPI for real visitor counting
+  fetchRealVisitorCount()
+    .then((count) => {
+      console.log("Visitor counter: API success, count:", count);
+      visitorElement.textContent = formatNumber(count);
+    })
+    .catch((error) => {
+      console.log("Visitor counter: API failed, showing placeholder", error);
+      visitorElement.textContent = "---";
+    });
 }
 
-// Local visitor counter as primary source
-function getLocalVisitorCount() {
-  const key = "lokstra-visitor-count";
-  const dateKey = "lokstra-last-visit-date";
-  const today = new Date().toDateString();
+// Fetch real visitor count from CountAPI
+async function fetchRealVisitorCount() {
+  try {
+    console.log("Visitor counter: calling CountAPI...");
+    
+    // Hit the counter API to increment and get count
+    const response = await fetch("https://api.countapi.xyz/hit/lokstra.dev/visits", {
+      method: "GET",
+      mode: "cors",
+    });
 
-  // Get current count - use existing value or start from 1
-  let count = parseInt(localStorage.getItem(key) || "1");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-  // Only set initial date if this is truly the first visit
-  const lastVisitDate = localStorage.getItem(dateKey);
-  const isFirstVisit = !lastVisitDate;
-  
-  if (isFirstVisit) {
-    // First time visitor - start with count 1
-    count = 1;
-    localStorage.setItem(key, count.toString());
-    localStorage.setItem(dateKey, today);
-    console.log("Visitor counter: first visit, starting with count:", count);
-    return count;
+    const data = await response.json();
+    console.log("Visitor counter: CountAPI response:", data);
+
+    if (data && typeof data.value === "number") {
+      return data.value;
+    } else {
+      throw new Error("Invalid response format");
+    }
+  } catch (error) {
+    console.log("Visitor counter: CountAPI error:", error.message);
+    throw error;
   }
-
-  // Check if this is a new day visit
-  if (lastVisitDate !== today) {
-    // New day - increment counter by 1
-    count += 1;
-    localStorage.setItem(key, count.toString());
-    localStorage.setItem(dateKey, today);
-    console.log(
-      "Visitor counter: new day visit detected, incremented to:",
-      count
-    );
-  } else {
-    console.log(
-      "Visitor counter: same day visit, returning existing count:",
-      count
-    );
-  }
-
-  return count;
 }
 
 // Format number with K/M suffixes
