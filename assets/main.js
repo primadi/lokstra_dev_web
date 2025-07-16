@@ -24,18 +24,26 @@ async function loadHTML(elementId, filePath) {
 // Utility function to load meta tags
 async function loadMetaTags(baseMeta, pageMeta) {
   try {
+    // Clear existing meta tags to prevent duplicates
+    const existingMetas = document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], title');
+    existingMetas.forEach(meta => {
+      if (!meta.getAttribute('charset') && !meta.getAttribute('viewport')) {
+        meta.remove();
+      }
+    });
+
     // Load base meta tags first
     const baseResponse = await fetch(baseMeta);
     if (baseResponse.ok) {
       const baseMetaHTML = await baseResponse.text();
-      document.head.insertAdjacentHTML("afterbegin", baseMetaHTML);
+      document.head.insertAdjacentHTML("beforeend", baseMetaHTML);
     }
 
-    // Then load page-specific meta tags
+    // Then load page-specific meta tags (these will override base ones)
     const pageResponse = await fetch(pageMeta);
     if (pageResponse.ok) {
       const pageMetaHTML = await pageResponse.text();
-      document.head.insertAdjacentHTML("afterbegin", pageMetaHTML);
+      document.head.insertAdjacentHTML("beforeend", pageMetaHTML);
     }
   } catch (error) {
     console.warn(`Error loading meta tags:`, error);
