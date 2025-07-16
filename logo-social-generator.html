@@ -132,39 +132,39 @@
             const logo = new Image();
             logo.crossOrigin = 'anonymous';
             logo.onload = function() {
-                // Draw logo (centered, appropriate size)
-                const logoSize = 160;
+                // Draw logo (centered, smaller and more proportional)
+                const logoSize = 120; // Smaller size
                 const logoX = (1200 - logoSize) / 2;
-                const logoY = 120;
+                const logoY = 150; // Moved down a bit
                 
-                // Add shadow effect to logo
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-                ctx.shadowBlur = 20;
-                ctx.shadowOffsetY = 10;
+                // Add subtle shadow effect to logo
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+                ctx.shadowBlur = 15;
+                ctx.shadowOffsetY = 8;
                 ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
                 ctx.shadowColor = 'transparent';
                 
-                // Main title
+                // Main title (moved up)
                 ctx.fillStyle = '#38bdf8';
-                ctx.font = 'bold 58px Inter, Arial, sans-serif';
+                ctx.font = 'bold 52px Inter, Arial, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText('Lokstra Framework', 600, 360);
+                ctx.fillText('Lokstra Framework', 600, 320);
                 
-                // Subtitle
+                // Subtitle (adjusted position)
                 ctx.fillStyle = '#e2e8f0';
-                ctx.font = '30px Inter, Arial, sans-serif';
-                ctx.fillText('Go Backend Framework', 600, 420);
+                ctx.font = '28px Inter, Arial, sans-serif';
+                ctx.fillText('Go Backend Framework', 600, 370);
                 
-                // Feature tags
+                // Feature tags (adjusted position)
                 ctx.fillStyle = '#38bdf8';
-                ctx.font = 'bold 22px Inter, Arial, sans-serif';
+                ctx.font = 'bold 20px Inter, Arial, sans-serif';
                 const features = ['🚀 Simple', '⚙️ Scalable', '🧱 Structured'];
-                const spacing = 180;
+                const spacing = 160;
                 const startX = 600 - (spacing * (features.length - 1)) / 2;
                 
                 features.forEach((feature, i) => {
-                    ctx.fillText(feature, startX + (i * spacing), 500);
+                    ctx.fillText(feature, startX + (i * spacing), 450);
                 });
                 
                 // Show preview
