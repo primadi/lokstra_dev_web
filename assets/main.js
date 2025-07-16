@@ -272,6 +272,7 @@ async function initWebsite() {
 
   // Initialize visitor counter
   // setTimeout(initVisitorCounter, 250);
+  setTimeout(updateVisitorCounter, 250);
 }
 
 // Hash-based routing: load correct partial on hash change
@@ -426,3 +427,37 @@ function formatNumber(num) {
   }
   return num.toString();
 }
+
+const updateVisitorCounter = async () => {
+  const key = "lokstra_counter_days";
+  const today = new Date().toISOString().slice(0, 10);
+  const maxDays = 7;
+  const now = new Date();
+  let visitedDays = {};
+
+  try {
+    visitedDays = JSON.parse(localStorage.getItem(key) || "{}");
+  } catch {}
+
+  for (const dateStr in visitedDays) {
+    const date = new Date(dateStr);
+    const diff = (now - date) / (1000 * 60 * 60 * 24);
+    if (diff > maxDays) delete visitedDays[dateStr];
+  }
+
+  if (!visitedDays[today]) {
+    try {
+      const res = await fetch("https://counter.lokstra.dev");
+      const data = await res.json();
+      console.log("Visitors:", data.count);
+
+      const el = document.getElementById("visitor-count");
+      if (el) el.textContent = formatNumber(data.count);
+
+      visitedDays[today] = true;
+      localStorage.setItem(key, JSON.stringify(visitedDays));
+    } catch (err) {
+      console.error("Counter fetch failed:", err);
+    }
+  }
+};
