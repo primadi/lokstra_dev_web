@@ -268,6 +268,9 @@ async function initWebsite() {
   // Initialize mobile navigation
   setTimeout(initMobileNav, 100);
 
+  // Initialize language switcher
+  setTimeout(initLanguageSwitcher, 150);
+
   // Trigger animations for initial load
   setTimeout(triggerAnimations, 150);
 
@@ -307,3 +310,53 @@ setTimeout(() => {
     }
   });
 }, 500);
+
+// Language switcher functionality
+function initLanguageSwitcher() {
+  // Handle both desktop and mobile language switches
+  document.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const lang = btn.getAttribute("data-lang");
+      if (lang) {
+        // Update active state for all lang buttons
+        document
+          .querySelectorAll(".lang-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .querySelectorAll(`[data-lang="${lang}"]`)
+          .forEach((b) => b.classList.add("active"));
+
+        // Store preference
+        localStorage.setItem("preferred-language", lang);
+
+        // Close mobile menu if open
+        closeMobileMenu();
+
+        // Could implement actual language switching here
+        console.log(`Language switched to: ${lang}`);
+      }
+    });
+  });
+
+  // Set initial language from localStorage or default to 'en'
+  const savedLang = localStorage.getItem("preferred-language") || "en";
+  document
+    .querySelectorAll(`[data-lang="${savedLang}"]`)
+    .forEach((btn) => btn.classList.add("active"));
+}
+
+// Utility function to close mobile menu
+function closeMobileMenu() {
+  const navToggle = document.querySelector(".nav-toggle");
+  const navLinks = document.querySelector(".nav-links");
+  const navOverlay = document.querySelector(".nav-overlay");
+  const body = document.body;
+
+  if (navToggle && navLinks && navOverlay) {
+    navToggle.classList.remove("active");
+    navLinks.classList.remove("active");
+    navOverlay.classList.remove("active");
+    body.classList.remove("menu-open");
+  }
+}
