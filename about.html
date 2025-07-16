@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About Lokstra Framework - Tentang Tim dan Visi Kami" />
+  <title>About - Lokstra Framework</title>
+  <link rel="icon" href="./assets/logo.png" type="image/png" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --text: #e2e8f0;
+      --accent: #38bdf8;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(56, 189, 248, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 75% 75%, rgba(56, 189, 248, 0.05) 0%, transparent 25%);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+    header, footer {
+      text-align: center;
+      padding: 2rem;
+    }
+    main {
+      flex: 1;
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      text-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+    }
+    h2 {
+      color: var(--accent);
+      font-size: 2rem;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+    }
+    h3 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .lang-switch {
+      position: fixed;
+      top: 5rem;
+      right: 1rem;
+      z-index: 1001;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .lang-switch a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .lang-switch a:hover {
+      color: var(--accent);
+    }
+    .navbar {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+    }
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .nav-logo:hover {
+      color: #0ea5e9;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.1);
+    }
+    .nav-links a.active {
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.15);
+    }
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 70%;
+        background: var(--bg);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: right 0.3s ease;
+        border-left: 1px solid rgba(56, 189, 248, 0.1);
+      }
+      .nav-links.active {
+        right: 0;
+      }
+      .nav-toggle {
+        display: block;
+      }
+    }
+    .hero-section {
+      text-align: center;
+      padding: 4rem 0;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border-radius: 20px;
+      margin-bottom: 4rem;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .content-section {
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(56, 189, 248, 0.1);
+      transition: all 0.3s ease;
+    }
+    .content-section:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    .team-card {
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      border: 1px solid rgba(56, 189, 248, 0.1);
+      transition: all 0.3s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56, 189, 248, 0.3);
+      box-shadow: 0 15px 35px rgba(56, 189, 248, 0.1);
+    }
+    .team-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1rem auto;
+      color: white;
+    }
+    .team-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .team-role {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .team-bio {
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .stat-card {
+      background: #1e293b;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid rgba(56, 189, 248, 0.1);
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+      padding-left: 2rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.5rem;
+      top: 0.5rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .timeline-year {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .timeline-content {
+      margin-top: 0.5rem;
+    }
+    section {
+      opacity: 0;
+      animation: fadeInUp 0.8s ease forwards;
+      margin-bottom: 3rem;
+    }
+    section:nth-child(1) { animation-delay: 0.2s; }
+    section:nth-child(2) { animation-delay: 0.4s; }
+    section:nth-child(3) { animation-delay: 0.6s; }
+    section:nth-child(4) { animation-delay: 0.8s; }
+    section:nth-child(5) { animation-delay: 1.0s; }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="lang-switch">
+    <a href="#">🇮🇩 Indonesia</a> | <a href="#">🇺🇸 English</a>
+  </div>
+  
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Lokstra</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="https://github.com/lokstra/framework#readme" target="_blank">Docs</a></li>
+        <li><a href="https://github.com/lokstra/framework/tree/main/examples" target="_blank">Examples</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+      <button class="nav-toggle">☰</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero-section">
+      <h1>About Lokstra</h1>
+      <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+        Lahir dari kebutuhan nyata developer Indonesia untuk framework backend yang simpel, powerful, dan mudah dipahami.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>🎯 Visi Kami</h2>
+      <p>
+        Menjadi framework backend Go terdepan yang memungkinkan developer Indonesia dan dunia untuk membangun 
+        aplikasi backend berkualitas tinggi dengan efisiensi maksimal. Kami percaya bahwa teknologi harus 
+        sederhana, powerful, dan dapat diakses oleh semua level developer.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>🚀 Misi Kami</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+        <div>
+          <h3>🎓 Mendidik & Memberdayakan</h3>
+          <p>Memberikan tools dan dokumentasi yang memungkinkan developer belajar dan berkembang dengan cepat.</p>
+        </div>
+        <div>
+          <h3>⚡ Mempercepat Development</h3>
+          <p>Mengurangi kompleksitas dan boilerplate code sehingga developer bisa fokus pada logic bisnis.</p>
+        </div>
+        <div>
+          <h3>🌍 Membangun Komunitas</h3>
+          <p>Menciptakan ekosistem developer Indonesia yang solid dan saling mendukung dalam pengembangan teknologi.</p>
+        </div>
+        <div>
+          <h3>🛠️ Inovasi Berkelanjutan</h3>
+          <p>Terus berinovasi dengan teknologi terbaru sambil menjaga kestabilan dan kompatibilitas framework.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>� Founder</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">🚀</div>
+          <div class="team-name">Primadi Setiawan</div>
+          <div class="team-role">Founder & Creator</div>
+          <div class="team-bio">
+            Passionate Go developer dengan pengalaman 8+ tahun di backend development. 
+            Memulai Lokstra dari frustrasi dengan kompleksitas framework existing dan 
+            visi untuk membuat development Go lebih accessible untuk developer Indonesia.
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">🤝</div>
+          <div class="team-name">Looking for Contributors</div>
+          <div class="team-role">Open for Collaboration</div>
+          <div class="team-bio">
+            Lokstra masih dalam tahap early development dan terbuka untuk contributors. 
+            Jika Anda tertarik untuk berkontribusi dalam pengembangan framework ini, 
+            silakan join komunitas atau hubungi founder.
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">�</div>
+          <div class="team-name">Growing Community</div>
+          <div class="team-role">Early Adopters</div>
+          <div class="team-bio">
+            Meskipun masih baru, Lokstra sudah mulai menarik perhatian developer 
+            yang mencari alternatif framework Go yang lebih simple dan practical 
+            untuk project mereka.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>📈 Current Status</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number">Mei 2025</span>
+          <div class="stat-label">Project Started</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">Early</span>
+          <div class="stat-label">Development Stage</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">1</span>
+          <div class="stat-label">Active Developer</div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">Growing</span>
+          <div class="stat-label">Community Interest</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>🗓️ Journey Lokstra</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">Mei 2025</div>
+          <div class="timeline-content">
+            <strong>Konsep Awal</strong><br>
+            Dimulai dari kebutuhan personal untuk framework Go yang lebih simple dan powerful dari yang existing di market.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Juni 2025</div>
+          <div class="timeline-content">
+            <strong>Core Development</strong><br>
+            Pengembangan core architecture dengan focus pada modular design dan kemudahan penggunaan, dikembangkan dengan bantuan AI untuk mempercepat iterasi.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Juli 2025</div>
+          <div class="timeline-content">
+            <strong>Documentation & Website</strong><br>
+            Pembuatan dokumentasi lengkap dan website project untuk memudahkan adoption oleh developer.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Roadmap Q3-Q4 2025</div>
+          <div class="timeline-content">
+            <strong>Community & Stabilization</strong><br>
+            Fokus pada community building, stabilitas framework, dan membangun ecosystem dengan early adopters.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>💡 Kenapa Lokstra?</h2>
+      <p>
+        Lokstra lahir dari pengalaman real-world developer Indonesia yang sering menghadapi trade-off 
+        antara simplicity vs power dalam memilih framework backend. Kebanyakan framework terlalu 
+        complex untuk project kecil, atau terlalu limiting untuk project besar.
+      </p>
+      <p>
+        Kami percaya bahwa developer harus bisa start simple, tapi punya path yang jelas untuk scale up 
+        tanpa perlu rewrite complete. Itulah filosofi dasar Lokstra: <strong>Start Simple, Scale Smart</strong>.
+      </p>
+      <p>
+        <strong>🤖 AI-Assisted Development:</strong> Lokstra dikembangkan dengan bantuan AI untuk mempercepat 
+        iterasi dan memastikan kualitas code. Kami percaya bahwa menggunakan AI sebagai tool development 
+        adalah bagian dari modern software engineering yang dapat meningkatkan produktivitas tanpa 
+        mengurangi kualitas.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>🤝 Ingin Bergabung?</h2>
+      <p>
+        Lokstra masih dalam tahap early development dan sangat terbuka untuk kolaborasi! 
+        Sebagai solo project yang baru 3 bulan, setiap kontribusi akan sangat berarti untuk 
+        perkembangan framework ini.
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+        <div style="background: #2d3748; padding: 1rem; border-radius: 8px;">
+          <strong>🛠️ Code Contribution</strong><br>
+          Bantu develop features, fix bugs, atau improve performance
+        </div>
+        <div style="background: #2d3748; padding: 1rem; border-radius: 8px;">
+          <strong>📝 Documentation</strong><br>
+          Tulis tutorials, improve docs, atau buat examples
+        </div>
+        <div style="background: #2d3748; padding: 1rem; border-radius: 8px;">
+          <strong>🎯 Testing & Feedback</strong><br>
+          Coba framework dan berikan feedback untuk improvement
+        </div>
+        <div style="background: #2d3748; padding: 1rem; border-radius: 8px;">
+          <strong>🌟 Community Building</strong><br>
+          Bantu spread the word dan build komunitas Lokstra
+        </div>
+      </div>
+      <p style="margin-top: 1.5rem; text-align: center;">
+        <strong>Tertarik? Join Telegram group atau contact langsung!</strong>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Lokstra.dev | Made with ❤️ in Indonesia</p>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+        navLinks.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
