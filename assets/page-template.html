@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags will be loaded dynamically -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" />
+  <link rel="stylesheet" href="./assets/style.css" />
+  <script src="./assets/main.js"></script>
+  <style>
+    /* Page-specific styles here */
+  </style>
+</head>
+<body>
+  <div id="navbar-container"></div>
+  
+  <main>
+    <!-- Page content here -->
+    <section class="hero-section">
+      <h1>Page Title</h1>
+      <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+        Page description
+      </p>
+    </section>
+
+    <!-- More sections here -->
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script>
+    // Load meta tags, navbar and footer
+    document.addEventListener('DOMContentLoaded', async function() {
+      await loadMetaTags('./assets/meta-base.html', './assets/meta-[PAGE_NAME].html');
+      await loadHTML('navbar-container', './assets/navbar.html');
+      await loadHTML('footer-container', './assets/footer.html');
+    });
+  </script>
+</body>
+</html>

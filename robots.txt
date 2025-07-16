@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://lokstra.dev/sitemap.xml
+
+# Specific paths
+Allow: /assets/
+Allow: /*.html
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.svg
+
+# Disallow any backup or development files
+Disallow: /*.bak
+Disallow: /*.tmp
+Disallow: /.*
