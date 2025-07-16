@@ -275,17 +275,17 @@ ol {
 /* Stats Grid */
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
   margin: 2rem 0;
-  max-width: 600px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .stat {
   text-align: center;
-  padding: 1rem;
+  padding: 0.75rem 0.5rem;
   background: rgba(45, 55, 72, 0.6);
   border: 1px solid rgba(56, 189, 248, 0.1);
   border-radius: 12px;
@@ -299,14 +299,14 @@ ol {
 }
 
 .stat-number {
-  font-size: 2rem;
+  font-size: 1.75rem;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .stat-label {
   color: #cbd5e1;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
 }
 
@@ -747,16 +747,20 @@ main {
   }
 
   .stats {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
   }
 
   .stat {
-    padding: 0.75rem;
+    padding: 0.6rem 0.4rem;
   }
 
   .stat-number {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
   }
 
   .btn {
@@ -785,7 +789,20 @@ main {
 /* Mobile styles for very small screens */
 @media (max-width: 480px) {
   .stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .stat {
+    padding: 0.5rem 0.3rem;
+  }
+
+  .stat-number {
+    font-size: 1.2rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
   }
 
   .badges {
@@ -1082,7 +1099,7 @@ main {
     justify-content: space-between;
     text-align: left;
   }
-  
+
   .footer-stats {
     justify-content: flex-end;
   }
