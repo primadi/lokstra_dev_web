@@ -29,6 +29,7 @@ export default [
         // Custom globals from our application
         loadHTML: "readonly",
         loadMetaTags: "readonly",
+        crypto: "readonly",
       },
     },
     rules: {

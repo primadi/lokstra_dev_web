@@ -429,35 +429,32 @@ function formatNumber(num) {
 }
 
 const updateVisitorCounter = async () => {
-  const key = "lokstra_counter_days";
-  const today = new Date().toISOString().slice(0, 10);
-  const maxDays = 7;
-  const now = new Date();
-  let visitedDays = {};
+  const uuidKey = "lokstra_uuid";
 
-  try {
-    visitedDays = JSON.parse(localStorage.getItem(key) || "{}");
-  } catch {}
-
-  for (const dateStr in visitedDays) {
-    const date = new Date(dateStr);
-    const diff = (now - date) / (1000 * 60 * 60 * 24);
-    if (diff > maxDays) delete visitedDays[dateStr];
+  // Generate UUID v4
+  function genUUID() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+      (
+        c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+      ).toString(16)
+    );
   }
 
-  if (!visitedDays[today]) {
-    try {
-      const res = await fetch("https://counter.lokstra.dev");
-      const data = await res.json();
-      console.log("Visitors:", data.count);
+  let uuid = localStorage.getItem(uuidKey);
+  if (!uuid) {
+    uuid = genUUID();
+    localStorage.setItem(uuidKey, uuid);
+  }
 
+  try {
+    const res = await fetch(`https://counter.lokstra.dev?uuid=${uuid}`);
+    const data = await res.json();
+    if (data.count !== undefined) {
       const el = document.getElementById("visitor-count");
       if (el) el.textContent = formatNumber(data.count);
-
-      visitedDays[today] = true;
-      localStorage.setItem(key, JSON.stringify(visitedDays));
-    } catch (err) {
-      console.error("Counter fetch failed:", err);
     }
+  } catch (err) {
+    console.error("Fetch error:", err);
   }
 };
