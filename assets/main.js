@@ -133,7 +133,8 @@ async function spaNavigate(route, isPopState) {
   ) {
     page = "index.html";
     isHome = true;
-  }  if (!page.endsWith(".html")) page += ".html";
+  }
+  if (!page.endsWith(".html")) page += ".html";
 
   // Load navbar, footer, and content (meta tags are static in index.html)
   await loadHTML("navbar-container", "./assets/navbar.html");
