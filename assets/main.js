@@ -256,6 +256,9 @@ async function initWebsite() {
 
   // Initialize Prism syntax highlighting for initial load
   setTimeout(initPrismHighlighting, 200);
+  
+  // Initialize visitor counter
+  setTimeout(initVisitorCounter, 250);
 }
 
 // Hash-based routing: load correct partial on hash change
@@ -381,3 +384,65 @@ function closeMobileMenu() {
     body.classList.remove("menu-open");
   }
 }
+
+// Initialize visitor counter
+function initVisitorCounter() {
+  const visitorElement = document.getElementById('visitor-count');
+  if (!visitorElement) return;
+
+  // Try to fetch visitor count from multiple sources
+  fetchVisitorCount()
+    .then(count => {
+      visitorElement.textContent = formatNumber(count);
+    })
+    .catch(() => {
+      // Fallback to localStorage counter
+      const localCount = getLocalVisitorCount();
+      visitorElement.textContent = formatNumber(localCount);
+    });
+}
+
+// Fetch visitor count from external API
+async function fetchVisitorCount() {
+  try {
+    // Try hitcounter.pythonanywhere.com (free service)
+    const response = await fetch('https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Flokstra.dev&countColor=%2338bdf8');
+    if (response.ok) {
+      const data = await response.json();
+      return data.count || 0;
+    }
+    throw new Error('API failed');
+  } catch (error) {
+    // Fallback to localStorage
+    throw error;
+  }
+}
+
+// Local visitor counter as fallback
+function getLocalVisitorCount() {
+  const key = 'lokstra-visitor-count';
+  let count = parseInt(localStorage.getItem(key) || '0');
+  
+  // Check if this is a new visit (simple session-based)
+  const sessionKey = 'lokstra-session-' + new Date().toDateString();
+  if (!sessionStorage.getItem(sessionKey)) {
+    count += 1;
+    localStorage.setItem(key, count.toString());
+    sessionStorage.setItem(sessionKey, 'visited');
+  }
+  
+  return count;
+}
+
+// Format number with K/M suffixes
+function formatNumber(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  }
+  return num.toString();
+}
+
+// Initialize visitor counter on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", initVisitorCounter);
