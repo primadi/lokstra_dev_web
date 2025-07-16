@@ -424,12 +424,15 @@ function initVisitorCounter() {
 async function fetchRealVisitorCount() {
   try {
     console.log("Visitor counter: calling CountAPI...");
-    
+
     // Hit the counter API to increment and get count
-    const response = await fetch("https://api.countapi.xyz/hit/lokstra.dev/visits", {
-      method: "GET",
-      mode: "cors",
-    });
+    const response = await fetch(
+      "https://api.countapi.xyz/hit/lokstra.dev/visits",
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
