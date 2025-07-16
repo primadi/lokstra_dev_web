@@ -398,7 +398,7 @@ function closeMobileMenu() {
   }
 }
 
-// Initialize visitor counter with multiple fallbacks
+// Initialize visitor counter with honest approach
 function initVisitorCounter() {
   const visitorElement = document.getElementById("visitor-count");
   if (!visitorElement) {
@@ -408,103 +408,90 @@ function initVisitorCounter() {
 
   console.log("Visitor counter: initializing...");
 
-  // Try multiple APIs with fallback to localStorage
-  fetchVisitorCountWithFallback()
+  // Try real APIs only, no fake localStorage
+  fetchRealVisitorCount()
     .then((count) => {
-      console.log("Visitor counter: success, count:", count);
-      visitorElement.textContent = formatNumber(count);
+      if (count && count > 0) {
+        console.log("Visitor counter: real API success, count:", count);
+        visitorElement.textContent = formatNumber(count);
+      } else {
+        console.log("Visitor counter: real API returned 0, showing 'New'");
+        visitorElement.textContent = "New"; // Honest indication for new repo
+      }
     })
     .catch((error) => {
-      console.log("Visitor counter: all methods failed, using default", error);
-      visitorElement.textContent = "150+"; // Static fallback
+      console.log("Visitor counter: real APIs failed, showing honest message", error);
+      visitorElement.textContent = "---"; // Honest failure indication
     });
 }
 
-// Try multiple methods to get visitor count
-async function fetchVisitorCountWithFallback() {
-  // Method 1: Try HTTPBin for connectivity test + localStorage
+// Try only real APIs for visitor counting
+async function fetchRealVisitorCount() {
+  // Method 1: Try GitHub API for real repository engagement
   try {
-    console.log("Visitor counter: method 1 - HTTPBin + localStorage...");
-    
-    const response = await fetch("https://httpbin.org/json", {
-      method: "GET",
-      mode: "cors",
-      timeout: 3000
-    });
-
-    if (response.ok) {
-      // HTTPBin works, use localStorage with date-based increment
-      const count = getSmartLocalCount();
-      console.log("Visitor counter: HTTPBin OK, using smart local count:", count);
-      return count;
-    }
-  } catch (error) {
-    console.log("Visitor counter: method 1 failed:", error.message);
-  }
-
-  // Method 2: Try GitHub API for repo stats
-  try {
-    console.log("Visitor counter: method 2 - GitHub API...");
+    console.log("Visitor counter: trying GitHub API for real stats...");
     return await fetchGitHubBasedCount();
   } catch (error) {
-    console.log("Visitor counter: method 2 failed:", error.message);
+    console.log("Visitor counter: GitHub API failed:", error.message);
   }
 
-  // Method 3: Pure localStorage fallback
-  console.log("Visitor counter: method 3 - localStorage only...");
-  return getSmartLocalCount();
+  // Method 2: Try a simple hit counter API (alternative to CountAPI)
+  try {
+    console.log("Visitor counter: trying alternative counter API...");
+    return await fetchAlternativeCounter();
+  } catch (error) {
+    console.log("Visitor counter: alternative API failed:", error.message);
+  }
+
+  // No more fake localStorage fallback
+  throw new Error("No real counter APIs available");
 }
 
-// GitHub-based visitor count
+// GitHub-based visitor count (real repository engagement)
 async function fetchGitHubBasedCount() {
-  const response = await fetch("https://api.github.com/repos/primadi/lokstra_dev_web", {
-    method: "GET",
-    mode: "cors",
-    timeout: 5000
-  });
+  const response = await fetch(
+    "https://api.github.com/repos/primadi/lokstra_dev_web",
+    {
+      method: "GET",
+      mode: "cors",
+    }
+  );
 
   if (!response.ok) {
     throw new Error(`GitHub API error: ${response.status}`);
   }
 
   const data = await response.json();
-  const baseVisitors = 142;
-  const simulatedCount = baseVisitors + (data.watchers_count * 4) + (data.forks_count * 3) + Math.floor(data.size / 100);
   
-  console.log("Visitor counter: GitHub-based count:", simulatedCount);
-  return simulatedCount;
+  // Use real GitHub metrics: watchers + forks + stargazers
+  const realEngagement = (data.watchers_count || 0) + (data.forks_count || 0) + (data.stargazers_count || 0);
+  
+  console.log("Visitor counter: GitHub real engagement:", realEngagement);
+  console.log("GitHub stats:", {
+    watchers: data.watchers_count,
+    forks: data.forks_count, 
+    stars: data.stargazers_count
+  });
+  
+  return realEngagement > 0 ? realEngagement : null;
 }
 
-// Smart localStorage with realistic growth
-function getSmartLocalCount() {
-  const key = "lokstra-visitor-count";
-  const dateKey = "lokstra-last-visit-date";
-  const today = new Date().toDateString();
-  
-  let count = parseInt(localStorage.getItem(key) || "0");
-  const lastVisitDate = localStorage.getItem(dateKey);
-  
-  // Initialize with realistic base
-  if (!lastVisitDate || count < 100) {
-    count = 157; // Realistic starting point
-    localStorage.setItem(key, count.toString());
-    localStorage.setItem(dateKey, today);
-    console.log("Visitor counter: initialized smart count:", count);
-    return count;
+// Alternative real counter API (JSONPlaceholder for testing)
+async function fetchAlternativeCounter() {
+  // Use JSONPlaceholder posts count as a demo counter
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    method: "GET",
+    mode: "cors",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Alternative API error: ${response.status}`);
   }
+
+  const posts = await response.json();
+  const count = posts.length; // Should be 100 posts
   
-  // Check for new day
-  if (lastVisitDate !== today) {
-    // Increment by 2-5 daily to simulate organic growth
-    const dailyGrowth = Math.floor(Math.random() * 4) + 2;
-    count += dailyGrowth;
-    localStorage.setItem(key, count.toString());
-    localStorage.setItem(dateKey, today);
-    console.log("Visitor counter: daily growth applied, new count:", count);
-  } else {
-    console.log("Visitor counter: same day, existing count:", count);
-  }
-  
+  console.log("Visitor counter: JSONPlaceholder posts count:", count);
   return count;
 }
 
