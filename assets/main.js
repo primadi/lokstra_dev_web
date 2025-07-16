@@ -170,8 +170,11 @@ async function spaNavigate(route, isPopState) {
     metaFile = "./assets/meta-architecture.html";
   else if (isHome) metaFile = "./assets/meta-home.html";
 
-  // Load meta tags and main content
-  await loadMetaTags("./assets/meta-base.html", metaFile);
+  // Load meta tags and main content (skip meta loading for home page as it's static)
+  if (!isHome) {
+    await loadMetaTags("./assets/meta-base.html", metaFile);
+  }
+  
   await loadHTML("navbar-container", "./assets/navbar.html");
   await loadHTML("footer-container", "./assets/footer.html");
 
@@ -276,7 +279,7 @@ async function initWebsite() {
     // Load specific page from hash
     await spaNavigate(hash, true);
   } else {
-    // Load home page by default
+    // Load home page by default (meta tags already static in index.html)
     await loadHTML("main-content", "./partials/home.html");
   }
 
