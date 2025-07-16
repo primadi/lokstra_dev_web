@@ -417,19 +417,45 @@ function initVisitorCounter() {
 async function fetchVisitorCount() {
   try {
     console.log("Visitor counter: attempting API call...");
-    // Try hitcounter.pythonanywhere.com (free service)
-    const response = await fetch(
-      "https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Flokstra.dev&countColor=%2338bdf8"
-    );
-    console.log("Visitor counter: API response status:", response.status);
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Visitor counter: API response data:", data);
-      return data.count || 0;
+    
+    // Try multiple APIs in order of preference
+    const apis = [
+      {
+        name: "CountAPI",
+        url: "https://api.countapi.xyz/hit/lokstra.dev/visits",
+        extractCount: (data) => data.value
+      },
+      {
+        name: "VisitorBadge", 
+        url: "https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Flokstra.dev&countColor=%2338bdf8",
+        extractCount: (data) => data.count
+      }
+    ];
+
+    for (const api of apis) {
+      try {
+        console.log(`Visitor counter: trying ${api.name}...`);
+        const response = await fetch(api.url);
+        console.log(`Visitor counter: ${api.name} response status:`, response.status);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`Visitor counter: ${api.name} response data:`, data);
+          const count = api.extractCount(data);
+          if (count !== undefined && count !== null) {
+            console.log(`Visitor counter: ${api.name} success, count:`, count);
+            return count;
+          }
+        }
+      } catch (apiError) {
+        console.log(`Visitor counter: ${api.name} failed:`, apiError);
+        continue; // Try next API
+      }
     }
-    throw new Error("API failed with status: " + response.status);
+    
+    throw new Error("All APIs failed");
   } catch (error) {
-    console.log("Visitor counter: API error:", error);
+    console.log("Visitor counter: All APIs failed:", error);
     // Fallback to localStorage
     throw error;
   }
