@@ -185,26 +185,7 @@ async function spaNavigate(route, isPopState) {
 
   // Update active nav link
   setTimeout(() => {
-    const navLinks_a = document.querySelectorAll(".nav-links a");
-    navLinks_a.forEach((link) => {
-      link.classList.remove("active");
-      const linkHref = link.getAttribute("href");
-      if (linkHref) {
-        if (
-          isHome &&
-          (linkHref === "index.html" ||
-            linkHref === "./index.html" ||
-            linkHref === "/")
-        ) {
-          link.classList.add("active");
-        } else if (
-          !isHome &&
-          linkHref.replace("./", "") === page.replace("./", "")
-        ) {
-          link.classList.add("active");
-        }
-      }
-    });
+    setActiveNavigation(page, isHome);
   }, 200);
 
   // Update hash if not popstate
@@ -315,25 +296,64 @@ window.initMobileNav = initMobileNav;
 // Initialize everything when DOM is ready
 document.addEventListener("DOMContentLoaded", initWebsite);
 
-// Set active navigation link based on current page (with delay for navbar loading)
-setTimeout(() => {
-  const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  const navLinks_a = document.querySelectorAll(".nav-links a");
+// Listen for hash changes to update active navigation
+window.addEventListener("hashchange", () => {
+  const currentHash = window.location.hash.replace("#", "");
+  const isHome = !currentHash || currentHash === "";
+  const currentPage = currentHash ? currentHash + ".html" : "index.html";
 
-  navLinks_a.forEach((link) => {
+  setActiveNavigation(currentPage, isHome);
+});
+
+// Listen for popstate (back/forward button)
+window.addEventListener("popstate", () => {
+  const currentHash = window.location.hash.replace("#", "");
+  const isHome = !currentHash || currentHash === "";
+  const currentPage = currentHash ? currentHash + ".html" : "index.html";
+
+  setActiveNavigation(currentPage, isHome);
+});
+
+// Set active navigation link based on current page/hash
+function setActiveNavigation(currentPage, isHome) {
+  const navLinks = document.querySelectorAll(".nav-links a");
+
+  navLinks.forEach((link) => {
     link.classList.remove("active");
     const href = link.getAttribute("href");
-    if (
-      href === currentPage ||
-      (currentPage === "" && href === "index.html") ||
-      (currentPage === "index.html" && href === "index.html") ||
-      (currentPage === "about.html" && href === "about.html") ||
-      (currentPage === "architecture.html" && href === "architecture.html") ||
-      (currentPage === "blog.html" && href === "blog.html")
+
+    if (!href) return;
+
+    // Handle home page
+    if (isHome && (href === "index.html" || href === "./" || href === "/")) {
+      link.classList.add("active");
+      return;
+    }
+
+    // Handle other pages - use hash-based detection
+    const currentHash = window.location.hash.replace("#", "");
+    const pageFromHref = href.replace(".html", "").replace("./", "");
+
+    if (currentHash && currentHash === pageFromHref) {
+      link.classList.add("active");
+    } else if (
+      !currentHash &&
+      !isHome &&
+      currentPage &&
+      href.includes(currentPage)
     ) {
       link.classList.add("active");
     }
   });
+}
+
+// Set active navigation link based on current page (with delay for navbar loading)
+setTimeout(() => {
+  const currentHash = window.location.hash.replace("#", "");
+  const isHome = !currentHash || currentHash === "";
+  const currentPage = currentHash ? currentHash + ".html" : "index.html";
+
+  setActiveNavigation(currentPage, isHome);
 }, 500);
 
 // Language switcher functionality
