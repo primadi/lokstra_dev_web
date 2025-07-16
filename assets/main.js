@@ -162,17 +162,17 @@ async function spaNavigate(route, isPopState) {
   }, 200);
 
   // Initialize visitor counter for home page
-  if (isHome) {
-    setTimeout(initVisitorCounter, 250);
-  }
+  // if (isHome) {
+  //   setTimeout(initVisitorCounter, 250);
+  // }
 
   // Also check for visitor counter on any page
-  setTimeout(() => {
-    const visitorElement = document.getElementById("visitor-count");
-    if (visitorElement && !visitorElement.textContent.match(/^\d/)) {
-      initVisitorCounter();
-    }
-  }, 300);
+  // setTimeout(() => {
+  //   const visitorElement = document.getElementById("visitor-count");
+  //   if (visitorElement && !visitorElement.textContent.match(/^\d/)) {
+  //     initVisitorCounter();
+  //   }
+  // }, 300);
 
   // Update hash if not popstate
   if (!isPopState) {
@@ -271,7 +271,7 @@ async function initWebsite() {
   setTimeout(initPrismHighlighting, 200);
 
   // Initialize visitor counter
-  setTimeout(initVisitorCounter, 250);
+  // setTimeout(initVisitorCounter, 250);
 }
 
 // Hash-based routing: load correct partial on hash change
@@ -399,21 +399,23 @@ function closeMobileMenu() {
 }
 
 // Initialize visitor counter with honest approach
-function initVisitorCounter() {
-  const visitorElement = document.getElementById("visitor-count");
-  if (!visitorElement) {
-    console.log("Visitor counter: element not found");
-    return;
-  }
+// function initVisitorCounter() {
+//   const visitorElement = document.getElementById("visitor-count");
+//   if (!visitorElement) {
+//     console.log("Visitor counter: element not found");
+//     return;
+//   }
 
-  console.log("Visitor counter: initializing...");
+//   console.log("Visitor counter: initializing...");
 
-  // Since we don't have real visitor tracking set up yet,
-  // show an honest indication
-  visitorElement.textContent = "📊"; // Analytics icon to indicate stats tracking
-  
-  console.log("Visitor counter: showing analytics placeholder until real tracking is implemented");
-}
+//   // Since we don't have real visitor tracking set up yet,
+//   // show an honest indication
+//   visitorElement.textContent = "📊"; // Analytics icon to indicate stats tracking
+
+//   console.log(
+//     "Visitor counter: showing analytics placeholder until real tracking is implemented"
+//   );
+// }
 
 // Format number with K/M suffixes
 function formatNumber(num) {
