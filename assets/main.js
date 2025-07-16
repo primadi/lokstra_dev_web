@@ -408,62 +408,13 @@ function initVisitorCounter() {
 
   console.log("Visitor counter: initializing...");
 
-  // Try to fetch visitor count from multiple sources
-  fetchVisitorCount()
-    .then((count) => {
-      console.log("Visitor counter: API success, count:", count);
-      visitorElement.textContent = formatNumber(count);
-    })
-    .catch((error) => {
-      console.log(
-        "Visitor counter: API failed, using localStorage fallback",
-        error
-      );
-      // Fallback to localStorage counter
-      const localCount = getLocalVisitorCount();
-      console.log("Visitor counter: localStorage count:", localCount);
-      visitorElement.textContent = formatNumber(localCount);
-    });
+  // Always use localStorage as the primary source
+  const localCount = getLocalVisitorCount();
+  console.log("Visitor counter: localStorage count:", localCount);
+  visitorElement.textContent = formatNumber(localCount);
 }
 
-// Fetch visitor count from external API
-async function fetchVisitorCount() {
-  try {
-    console.log("Visitor counter: attempting API call...");
-
-    // Test API connectivity with a simple endpoint
-    const response = await fetch("https://httpbin.org/json", {
-      method: "GET",
-      mode: "cors",
-    });
-
-    console.log("Visitor counter: API response status:", response.status);
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Visitor counter: API response data:", data);
-
-      // API test successful - generate a realistic visitor count
-      const baseCount = 85; // Starting base
-      const randomAdd = Math.floor(Math.random() * 30); // Add 0-29
-      const simulatedCount = baseCount + randomAdd;
-
-      console.log(
-        "Visitor counter: API test successful, using simulated count:",
-        simulatedCount
-      );
-      return simulatedCount;
-    }
-
-    throw new Error("API failed or returned invalid data");
-  } catch (error) {
-    console.log("Visitor counter: API error:", error.message);
-    // Always fallback to localStorage for reliability
-    throw error;
-  }
-}
-
-// Local visitor counter as fallback
+// Local visitor counter as primary source
 function getLocalVisitorCount() {
   const key = "lokstra-visitor-count";
   const dateKey = "lokstra-last-visit-date";
