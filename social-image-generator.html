@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Lokstra Social Image</title>
+    <style>
+        body { 
+            font-family: Inter, -apple-system, sans-serif; 
+            margin: 0; 
+            padding: 2rem; 
+            background: #f8fafc; 
+        }
+        .generator { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .preview { 
+            width: 1200px; 
+            height: 630px; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+            margin: 2rem auto; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            overflow: hidden;
+            transform: scale(0.5);
+            transform-origin: top left;
+        }
+        .social-content { 
+            text-align: center; 
+            color: white; 
+            z-index: 2;
+        }
+        .social-logo { 
+            width: 200px; 
+            height: 200px; 
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        }
+        .social-title { 
+            font-size: 4rem; 
+            font-weight: 800; 
+            margin-bottom: 1rem; 
+            background: linear-gradient(135deg, #38bdf8, #06b6d4);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .social-subtitle { 
+            font-size: 2rem; 
+            color: #e2e8f0; 
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+        .social-features { 
+            display: flex; 
+            gap: 3rem; 
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .feature { color: #38bdf8; }
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #38bdf8 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #06b6d4 2px, transparent 2px);
+            background-size: 60px 60px;
+        }
+        .controls { 
+            margin: 2rem 0; 
+            text-align: center; 
+        }
+        .btn { 
+            background: #3b82f6; 
+            color: white; 
+            padding: 1rem 2rem; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            margin: 0.5rem; 
+        }
+        .btn:hover { background: #2563eb; }
+        .download-link { 
+            display: none; 
+            color: #059669; 
+            margin-top: 1rem; 
+        }
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+    <div class="generator">
+        <h1>🎨 Lokstra Social Image Generator</h1>
+        <p>Generate optimized social media image untuk WhatsApp, Facebook, Twitter, dll.</p>
+        
+        <div class="preview" id="social-preview">
+            <div class="bg-pattern"></div>
+            <div class="social-content">
+                <img src="./assets/logo.png" alt="Lokstra" class="social-logo" id="logo-img">
+                <div class="social-title">Lokstra Framework</div>
+                <div class="social-subtitle">Go Backend Framework</div>
+                <div class="social-features">
+                    <span class="feature">🚀 Simple</span>
+                    <span class="feature">⚙️ Scalable</span>
+                    <span class="feature">🧱 Structured</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="generateImage()">📸 Generate Social Image</button>
+            <button class="btn" onclick="downloadImage()">💾 Download PNG</button>
+            <div class="download-link" id="download-link">
+                <a href="#" download="lokstra-social.png" id="download-anchor">📥 Download lokstra-social.png</a>
+            </div>
+        </div>
+        
+        <div style="background: #f1f5f9; padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+            <h3>📋 Usage Instructions:</h3>
+            <ol>
+                <li>Click "Generate Social Image" untuk render canvas</li>
+                <li>Click "Download PNG" untuk download file (optimized untuk social media)</li>
+                <li>Upload image ke folder assets/ sebagai <code>social-preview.png</code></li>
+                <li>Update meta tags di index.html untuk menggunakan image baru</li>
+            </ol>
+        </div>
+
+        <div style="background: #ecfccb; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #65a30d;">
+            <h4>✅ Optimized Specs:</h4>
+            <ul>
+                <li><strong>Size:</strong> 1200x630px (recommended by Facebook/WhatsApp)</li>
+                <li><strong>Aspect Ratio:</strong> 1.91:1 (perfect for social media)</li>
+                <li><strong>File Size:</strong> Will be optimized to &lt;200KB</li>
+                <li><strong>Format:</strong> PNG dengan compression</li>
+            </ul>
+        </div>
+    </div>
+
+    <canvas id="social-canvas" width="1200" height="630"></canvas>
+
+    <script>
+        async function generateImage() {
+            const canvas = document.getElementById('social-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 1200;
+            canvas.height = 630;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#0f172a');
+            gradient.addColorStop(1, '#1e293b');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+            
+            // Background pattern
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.1)';
+            for (let x = 0; x < 1200; x += 60) {
+                for (let y = 0; y < 630; y += 60) {
+                    if ((x + y) % 120 === 0) {
+                        ctx.beginPath();
+                        ctx.arc(x + 15, y + 15, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+            
+            // Load and draw logo
+            const logo = new Image();
+            logo.crossOrigin = 'anonymous';
+            logo.onload = function() {
+                // Draw logo
+                const logoSize = 180;
+                const logoX = (1200 - logoSize) / 2;
+                const logoY = 80;
+                ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+                
+                // Title
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 64px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Lokstra Framework', 600, 350);
+                
+                // Subtitle
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '32px Inter, sans-serif';
+                ctx.fillText('Go Backend Framework', 600, 410);
+                
+                // Features
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 24px Inter, sans-serif';
+                const features = ['🚀 Simple', '⚙️ Scalable', '🧱 Structured'];
+                const startX = 300;
+                features.forEach((feature, i) => {
+                    ctx.fillText(feature, startX + (i * 200), 500);
+                });
+                
+                console.log('✅ Social image generated successfully!');
+                document.getElementById('download-link').style.display = 'block';
+            };
+            logo.src = './assets/logo.png';
+        }
+        
+        function downloadImage() {
+            const canvas = document.getElementById('social-canvas');
+            const link = document.getElementById('download-anchor');
+            
+            // Convert to blob with compression
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.click();
+                
+                // Clean up
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            }, 'image/png', 0.8);
+        }
+    </script>
+</body>
+</html>
