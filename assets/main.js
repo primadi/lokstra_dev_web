@@ -222,19 +222,44 @@ async function spaNavigate(route, isPopState) {
 
 // Function to trigger animations
 function triggerAnimations() {
-  // Reset and trigger section animations
-  const sections = document.querySelectorAll("section");
-  sections.forEach((section, index) => {
-    // Reset animation
-    section.style.opacity = "0";
-    section.style.animation = "none";
+  try {
+    // Reset and trigger section animations
+    const sections = document.querySelectorAll("section");
+    sections.forEach((section, index) => {
+      // Ensure content is always visible first
+      section.style.opacity = "1";
+      section.style.visibility = "visible";
 
-    // Trigger animation with delay
-    setTimeout(() => {
-      section.style.animation = `fadeInUp 0.8s ease forwards`;
-      section.style.animationDelay = `${0.2 + index * 0.2}s`;
-    }, 50);
-  });
+      // Add animation class if available
+      if (section.classList) {
+        section.classList.add("fade-in-up");
+        // Apply staggered delay
+        section.style.animationDelay = `${0.1 + index * 0.15}s`;
+      }
+    });
+
+    // Ensure main content container is visible
+    const mainContent = document.getElementById("main-content");
+    if (mainContent) {
+      mainContent.style.opacity = "1";
+      mainContent.style.visibility = "visible";
+    }
+  } catch (error) {
+    console.warn(
+      "Animation trigger failed, but content should remain visible:",
+      error
+    );
+    // Fallback: ensure all content is visible
+    const allSections = document.querySelectorAll(
+      "section, main, #main-content"
+    );
+    allSections.forEach((el) => {
+      if (el) {
+        el.style.opacity = "1";
+        el.style.visibility = "visible";
+      }
+    });
+  }
 }
 
 // Function to reinitialize Prism.js syntax highlighting
