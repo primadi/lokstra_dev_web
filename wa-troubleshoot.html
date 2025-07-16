@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Troubleshooting - Lokstra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #0066cc;
+        }
+        .url-test {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid #90caf9;
+        }
+        .url-box {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 5px 0;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 12px;
+        }
+        .copy-btn:hover {
+            background: #0052a3;
+        }
+        .status {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status.working { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+        .status.testing { background: #fff3cd; color: #856404; border-left: 4px solid #ffc107; }
+        .status.failed { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+        
+        .troubleshoot {
+            background: #fff8e1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 WhatsApp Preview Troubleshooting</h1>
+        <p>Comprehensive testing untuk WhatsApp preview issues</p>
+
+        <div class="test-section">
+            <h2>📋 Current Status Update</h2>
+            <div class="status working">✅ Title & Description: Working dengan ?v=2025</div>
+            <div class="status failed">❌ Image Preview: Tidak muncul</div>
+            <div class="status testing">🔄 Testing: Simplified version tanpa image</div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Test URLs untuk WhatsApp</h2>
+            
+            <div class="url-test">
+                <h4>1. Main URL (Simplified - No Image)</h4>
+                <div class="url-box">https://lokstra.dev/</div>
+                <button class="copy-btn" onclick="copyToClipboard('https://lokstra.dev/')">📋 Copy</button>
+                <p><strong>Expected:</strong> Title + Description only, no image</p>
+            </div>
+
+            <div class="url-test">
+                <h4>2. Cache Buster (Latest)</h4>
+                <div class="url-box">https://lokstra.dev/?test=simple</div>
+                <button class="copy-btn" onclick="copyToClipboard('https://lokstra.dev/?test=simple')">📋 Copy</button>
+                <p><strong>Expected:</strong> Force refresh WhatsApp cache</p>
+            </div>
+
+            <div class="url-test">
+                <h4>3. Simple Test Page</h4>
+                <div class="url-box">https://lokstra.dev/simple-test.html</div>
+                <button class="copy-btn" onclick="copyToClipboard('https://lokstra.dev/simple-test.html')">📋 Copy</button>
+                <p><strong>Expected:</strong> Dedicated test page dengan minimal meta tags</p>
+            </div>
+
+            <div class="url-test">
+                <h4>4. Previous Working (with ?v=2025)</h4>
+                <div class="url-box">https://lokstra.dev/?v=2025</div>
+                <button class="copy-btn" onclick="copyToClipboard('https://lokstra.dev/?v=2025')">📋 Copy</button>
+                <p><strong>Status:</strong> Working title+description (confirmed by user)</p>
+            </div>
+        </div>
+
+        <div class="troubleshoot">
+            <h2>🚨 Possible Issues & Solutions</h2>
+            
+            <h4>Issue 1: WhatsApp Cache</h4>
+            <ul>
+                <li><strong>Problem:</strong> WhatsApp cache URL lama</li>
+                <li><strong>Solution:</strong> Gunakan query parameters berbeda (?test=simple)</li>
+                <li><strong>Timeframe:</strong> Cache bisa bertahan 24-48 jam</li>
+            </ul>
+
+            <h4>Issue 2: Logo File Size</h4>
+            <ul>
+                <li><strong>Problem:</strong> Logo 1.3MB terlalu besar</li>
+                <li><strong>Solution:</strong> Removed image dari meta tags sementara</li>
+                <li><strong>Next:</strong> Create optimized logo (<200KB)</li>
+            </ul>
+
+            <h4>Issue 3: Meta Tags Format</h4>
+            <ul>
+                <li><strong>Problem:</strong> Complex meta tags tidak compatible</li>
+                <li><strong>Solution:</strong> Simplified ke minimal required tags</li>
+                <li><strong>Current:</strong> og:title, og:description, og:url only</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>📱 Testing Instructions</h2>
+            <ol>
+                <li><strong>Test URL #2 first:</strong> <code>https://lokstra.dev/?test=simple</code></li>
+                <li><strong>Copy paste di WhatsApp chat</strong></li>
+                <li><strong>Wait 5-10 seconds</strong> untuk preview load</li>
+                <li><strong>Expected result:</strong> Title + Description (no image)</li>
+                <li><strong>If working:</strong> Berarti basic preview sudah fixed</li>
+                <li><strong>If not working:</strong> Try URL #3 (simple-test.html)</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>🔗 Validation Tools</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                <div style="text-align: center;">
+                    <button class="copy-btn" onclick="window.open('https://developers.facebook.com/tools/debug/?q=https%3A%2F%2Flokstra.dev%2F', '_blank')" style="width: 100%; padding: 15px;">
+                        👥 Facebook Debugger
+                    </button>
+                </div>
+                <div style="text-align: center;">
+                    <button class="copy-btn" onclick="window.open('https://www.opengraph.xyz/?url=https%3A%2F%2Flokstra.dev%2F', '_blank')" style="width: 100%; padding: 15px;">
+                        🔗 Open Graph Preview
+                    </button>
+                </div>
+                <div style="text-align: center;">
+                    <button class="copy-btn" onclick="window.open('https://cards-dev.twitter.com/validator', '_blank')" style="width: 100%; padding: 15px;">
+                        🐦 Twitter Validator
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            <p><a href="/" style="color: #0066cc; text-decoration: none;">← Back to Homepage</a></p>
+            <p style="font-size: 0.9em; color: #666;">Debug page - Lokstra Framework © 2025</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Show temporary success message
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#0066cc';
+                }, 2000);
+            }, function(err) {
+                alert('Failed to copy: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
