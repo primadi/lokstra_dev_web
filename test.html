@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WhatsApp Test - Lokstra Framework</title>
+    <meta name="description" content="Test minimal untuk WhatsApp preview - Lokstra Framework">
+    
+    <!-- Minimal Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lokstra.dev/test.html">
+    <meta property="og:title" content="Lokstra Framework - Go Backend Framework">
+    <meta property="og:description" content="Framework backend Go yang simpel, scalable, dan terstruktur">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/0066cc/ffffff?text=Lokstra">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <style>
+        body { font-family: Arial; padding: 40px; text-align: center; background: #f5f5f5; }
+        .card { background: white; padding: 40px; border-radius: 12px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #0066cc; margin-bottom: 20px; }
+        .test-url { background: #f8f9fa; padding: 15px; border-radius: 6px; font-family: monospace; margin: 20px 0; border: 1px solid #dee2e6; }
+        .btn { background: #0066cc; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; margin: 10px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚀 Lokstra Framework</h1>
+        <h2>WhatsApp Preview Test</h2>
+        
+        <p>Halaman test untuk WhatsApp preview dengan meta tags minimal dan placeholder image.</p>
+        
+        <div class="test-url">https://lokstra.dev/test.html</div>
+        
+        <p><strong>Expected Preview:</strong></p>
+        <ul style="text-align: left;">
+            <li>Title: Lokstra Framework - Go Backend Framework</li>
+            <li>Description: Framework backend Go yang simpel...</li>
+            <li>Image: Blue placeholder dengan text "Lokstra"</li>
+        </ul>
+        
+        <button class="btn" onclick="copyURL()">📋 Copy Test URL</button>
+        
+        <hr style="margin: 30px 0;">
+        
+        <h3>🔧 Framework Features</h3>
+        <p>🚀 Simple | ⚙️ Scalable | 🧱 Structured | 🎯 Production Ready</p>
+        
+        <p><a href="/">← Back to Homepage</a></p>
+    </div>
+
+    <script>
+        function copyURL() {
+            navigator.clipboard.writeText('https://lokstra.dev/test.html').then(() => {
+                alert('✅ URL copied! Paste di WhatsApp sekarang.');
+            });
+        }
+    </script>
+</body>
+</html>
