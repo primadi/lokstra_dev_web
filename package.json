@@ -1,0 +1,42 @@
+{
+  "name": "lokstra-dev-web",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Lokstra Framework Website - Static website for Lokstra Go framework",
+  "main": "assets/main.js",
+  "scripts": {
+    "lint": "eslint assets/*.js",
+    "lint:fix": "eslint assets/*.js --fix",
+    "serve": "python -m http.server 8000",
+    "serve:node": "npx http-server . -p 8000 -c-1",
+    "serve:php": "php -S localhost:8000",
+    "dev": "python -m http.server 8000",
+    "start": "python -m http.server 8000"
+  },
+  "keywords": [
+    "lokstra",
+    "go",
+    "framework",
+    "backend",
+    "website",
+    "static"
+  ],
+  "author": "Primadi Setiawan",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "eslint": "^8.57.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/primadi/lokstra_dev_web.git"
+  },
+  "homepage": "https://lokstra.dev",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
