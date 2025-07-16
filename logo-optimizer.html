@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Optimize Logo for Social Sharing</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        canvas { border: 1px solid #ddd; margin: 10px 0; display: block; }
+        .btn { background: #0066cc; color: white; padding: 10px 20px; border: none; border-radius: 4px; margin: 5px; cursor: pointer; }
+        .info { background: #e3f2fd; padding: 15px; border-radius: 4px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🖼️ Logo Optimizer for Social Sharing</h2>
+        
+        <div class="info">
+            <strong>Problem:</strong> Current logo is 1.3MB - too large for WhatsApp preview<br>
+            <strong>Solution:</strong> Create optimized versions for social sharing
+        </div>
+
+        <h3>Original Logo:</h3>
+        <img id="originalLogo" src="./assets/logo.png" style="max-width: 200px;" crossorigin="anonymous">
+        
+        <h3>Optimized for WhatsApp (400x400):</h3>
+        <canvas id="whatsappCanvas" width="400" height="400"></canvas>
+        <button class="btn" onclick="optimizeForWhatsApp()">Create WhatsApp Version</button>
+        <button class="btn" onclick="downloadWhatsApp()">Download PNG</button>
+        
+        <h3>Optimized for Facebook (1200x630):</h3>
+        <canvas id="facebookCanvas" width="1200" height="630"></canvas>
+        <button class="btn" onclick="optimizeForFacebook()">Create Facebook Version</button>
+        <button class="btn" onclick="downloadFacebook()">Download PNG</button>
+
+        <div class="info">
+            <strong>Instructions:</strong><br>
+            1. Generate optimized images above<br>
+            2. Download and replace current logo<br>
+            3. Upload to /assets/ folder<br>
+            4. Test WhatsApp with new cache buster URL
+        </div>
+    </div>
+
+    <script>
+        function optimizeForWhatsApp() {
+            const canvas = document.getElementById('whatsappCanvas');
+            const ctx = canvas.getContext('2d');
+            const img = document.getElementById('originalLogo');
+            
+            // Clear canvas with white background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 400, 400);
+            
+            // Draw resized logo
+            const size = Math.min(350, img.width, img.height);
+            const x = (400 - size) / 2;
+            const y = (400 - size) / 2;
+            
+            ctx.drawImage(img, x, y, size, size);
+            
+            console.log('✅ WhatsApp version optimized (400x400)');
+        }
+
+        function optimizeForFacebook() {
+            const canvas = document.getElementById('facebookCanvas');
+            const ctx = canvas.getContext('2d');
+            const img = document.getElementById('originalLogo');
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#0f172a');
+            gradient.addColorStop(1, '#1e293b');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+            
+            // Draw logo
+            const logoSize = 200;
+            const logoX = (1200 - logoSize) / 2;
+            const logoY = 150;
+            ctx.drawImage(img, logoX, logoY, logoSize, logoSize);
+            
+            // Add text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Lokstra Framework', 600, 420);
+            
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = '32px Arial';
+            ctx.fillText('Go Backend Framework', 600, 470);
+            
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '24px Arial';
+            ctx.fillText('Simple. Scalable. Structured.', 600, 510);
+            
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 28px Arial';
+            ctx.fillText('lokstra.dev', 600, 580);
+            
+            console.log('✅ Facebook version optimized (1200x630)');
+        }
+
+        function downloadWhatsApp() {
+            const canvas = document.getElementById('whatsappCanvas');
+            const link = document.createElement('a');
+            link.download = 'logo-whatsapp-400x400.png';
+            link.href = canvas.toDataURL('image/png', 0.8);
+            link.click();
+        }
+
+        function downloadFacebook() {
+            const canvas = document.getElementById('facebookCanvas');
+            const link = document.createElement('a');
+            link.download = 'social-preview-1200x630.png';
+            link.href = canvas.toDataURL('image/png', 0.8);
+            link.click();
+        }
+
+        // Auto-generate when image loads
+        document.getElementById('originalLogo').onload = function() {
+            setTimeout(() => {
+                optimizeForWhatsApp();
+                optimizeForFacebook();
+            }, 100);
+        };
+    </script>
+</body>
+</html>
