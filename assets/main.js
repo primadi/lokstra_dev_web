@@ -21,35 +21,6 @@ async function loadHTML(elementId, filePath) {
   }
 }
 
-// Utility function to load meta tags
-async function loadMetaTags(baseMeta, pageMeta) {
-  try {
-    // Remove existing Open Graph and Twitter meta tags
-    const existingMetas = document.querySelectorAll(
-      'meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], title:not(:first-of-type)'
-    );
-    existingMetas.forEach((meta) => {
-      meta.remove();
-    });
-
-    // Load base meta tags first
-    const baseResponse = await fetch(baseMeta);
-    if (baseResponse.ok) {
-      const baseMetaHTML = await baseResponse.text();
-      document.head.insertAdjacentHTML("beforeend", baseMetaHTML);
-    }
-
-    // Then load page-specific meta tags (these will override base ones)
-    const pageResponse = await fetch(pageMeta);
-    if (pageResponse.ok) {
-      const pageMetaHTML = await pageResponse.text();
-      document.head.insertAdjacentHTML("beforeend", pageMetaHTML);
-    }
-  } catch (error) {
-    console.warn(`Error loading meta tags:`, error);
-  }
-}
-
 // Mobile navigation functionality
 function initMobileNav() {
   const navToggle = document.querySelector(".nav-toggle");
@@ -162,19 +133,9 @@ async function spaNavigate(route, isPopState) {
   ) {
     page = "index.html";
     isHome = true;
-  }
-  if (!page.endsWith(".html")) page += ".html";
-  let metaFile = "./assets/meta-base.html";
-  if (page === "about.html") metaFile = "./assets/meta-about.html";
-  else if (page === "architecture.html")
-    metaFile = "./assets/meta-architecture.html";
-  else if (isHome) metaFile = "./assets/meta-home.html";
+  }  if (!page.endsWith(".html")) page += ".html";
 
-  // Load meta tags and main content (skip meta loading for home page as it's static)
-  if (!isHome) {
-    await loadMetaTags("./assets/meta-base.html", metaFile);
-  }
-  
+  // Load navbar, footer, and content (meta tags are static in index.html)
   await loadHTML("navbar-container", "./assets/navbar.html");
   await loadHTML("footer-container", "./assets/footer.html");
 
