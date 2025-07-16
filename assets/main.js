@@ -25,9 +25,11 @@ async function loadHTML(elementId, filePath) {
 async function loadMetaTags(baseMeta, pageMeta) {
   try {
     // Clear existing meta tags to prevent duplicates
-    const existingMetas = document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], title');
-    existingMetas.forEach(meta => {
-      if (!meta.getAttribute('charset') && !meta.getAttribute('viewport')) {
+    const existingMetas = document.querySelectorAll(
+      'meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], title'
+    );
+    existingMetas.forEach((meta) => {
+      if (!meta.getAttribute("charset") && !meta.getAttribute("viewport")) {
         meta.remove();
       }
     });
