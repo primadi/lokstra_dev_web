@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Social Preview - Lokstra</title>
+    <style>
+        body { 
+            font-family: Inter, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: #f8fafc; 
+            line-height: 1.6;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        .preview-container {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .social-image {
+            max-width: 100%;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .btn { 
+            background: #3b82f6; 
+            color: white; 
+            padding: 12px 24px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 16px;
+            margin: 8px;
+        }
+        .btn:hover { background: #2563eb; }
+        .btn.success { background: #10b981; }
+        .btn.success:hover { background: #059669; }
+        canvas { display: none; }
+        .status {
+            background: #ecfccb;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #65a30d;
+            margin: 15px 0;
+        }
+        .logo-info {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #f59e0b;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Generate Social Preview Image</h1>
+        <p>Membuat social preview image untuk WhatsApp menggunakan logo Lokstra yang ada.</p>
+        
+        <div class="logo-info">
+            <h4>📋 Source Image</h4>
+            <p><strong>Using:</strong> <code>./assets/logo.png</code> (Lokstra logo yang sudah ada)</p>
+            <p><strong>Output:</strong> Social media image 1200x630px optimized untuk WhatsApp</p>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="btn" onclick="generateSocialImage()">🚀 Generate Social Image</button>
+            <button class="btn success" onclick="downloadImage()" id="downloadBtn" style="display:none;">💾 Download PNG</button>
+            <button class="btn" onclick="updateMetaTags()" id="metaBtn" style="display:none;">🔄 Update Meta Tags</button>
+        </div>
+        
+        <div class="preview-container" id="previewContainer" style="display:none;">
+            <h3>📸 Generated Social Image Preview:</h3>
+            <img id="generatedImage" class="social-image" alt="Generated social image">
+            <p><strong>Size:</strong> 1200x630px | <strong>Format:</strong> PNG | <strong>Optimized for:</strong> WhatsApp, Facebook, Twitter</p>
+        </div>
+        
+        <canvas id="socialCanvas" width="1200" height="630"></canvas>
+        
+        <div class="status">
+            <h4>✅ Process:</h4>
+            <ol>
+                <li>Click "Generate Social Image" - akan menggunakan logo.png</li>
+                <li>Preview akan muncul di bawah</li>
+                <li>Click "Download PNG" untuk save file</li>
+                <li>Upload ke <code>/assets/social-preview.png</code></li>
+                <li>Click "Update Meta Tags" untuk update homepage</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        async function generateSocialImage() {
+            const canvas = document.getElementById('socialCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions (perfect for social media)
+            canvas.width = 1200;
+            canvas.height = 630;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#0f172a');
+            gradient.addColorStop(1, '#1e293b');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+            
+            // Subtle pattern overlay
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.05)';
+            for (let x = 0; x < 1200; x += 40) {
+                for (let y = 0; y < 630; y += 40) {
+                    if ((x + y) % 80 === 0) {
+                        ctx.beginPath();
+                        ctx.arc(x, y, 1, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+            
+            // Load logo and generate image
+            const logo = new Image();
+            logo.crossOrigin = 'anonymous';
+            logo.onload = function() {
+                // Draw logo (centered, appropriate size)
+                const logoSize = 160;
+                const logoX = (1200 - logoSize) / 2;
+                const logoY = 120;
+                
+                // Add shadow effect to logo
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetY = 10;
+                ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+                ctx.shadowColor = 'transparent';
+                
+                // Main title
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 58px Inter, Arial, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Lokstra Framework', 600, 360);
+                
+                // Subtitle
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '30px Inter, Arial, sans-serif';
+                ctx.fillText('Go Backend Framework', 600, 420);
+                
+                // Feature tags
+                ctx.fillStyle = '#38bdf8';
+                ctx.font = 'bold 22px Inter, Arial, sans-serif';
+                const features = ['🚀 Simple', '⚙️ Scalable', '🧱 Structured'];
+                const spacing = 180;
+                const startX = 600 - (spacing * (features.length - 1)) / 2;
+                
+                features.forEach((feature, i) => {
+                    ctx.fillText(feature, startX + (i * spacing), 500);
+                });
+                
+                // Show preview
+                showImagePreview(canvas);
+                
+                console.log('✅ Social image generated successfully!');
+            };
+            
+            logo.onerror = function() {
+                console.error('❌ Failed to load logo.png');
+                alert('❌ Gagal load logo.png. Pastikan file ada di ./assets/logo.png');
+            };
+            
+            logo.src = './assets/logo.png';
+        }
+        
+        function showImagePreview(canvas) {
+            const dataURL = canvas.toDataURL('image/png', 0.9);
+            const img = document.getElementById('generatedImage');
+            img.src = dataURL;
+            
+            document.getElementById('previewContainer').style.display = 'block';
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+            document.getElementById('metaBtn').style.display = 'inline-block';
+        }
+        
+        function downloadImage() {
+            const canvas = document.getElementById('socialCanvas');
+            
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'lokstra-social-preview.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                alert('✅ Image downloaded sebagai "lokstra-social-preview.png"!\n\nNext steps:\n1. Upload file ke folder /assets/\n2. Rename jadi social-preview.png\n3. Click "Update Meta Tags"');
+            }, 'image/png', 0.9);
+        }
+        
+        function updateMetaTags() {
+            alert('🔄 Untuk update meta tags:\n\n1. Pastikan sudah upload image ke /assets/social-preview.png\n2. Update meta tag di index.html:\n\n<meta property="og:image" content="https://lokstra.dev/assets/social-preview.png" />\n\n3. Deploy ke GitHub Pages');
+        }
+    </script>
+</body>
+</html>
