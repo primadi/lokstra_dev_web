@@ -1,0 +1,503 @@
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>🚀 Getting Started</h1>
+      <p class="hero-subtitle">
+        Panduan lengkap untuk memulai development dengan Lokstra Framework.
+        Dari instalasi hingga deployment pertama Anda.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>📋 Prerequisites</h2>
+    <p>Sebelum memulai, pastikan Anda telah menginstall:</p>
+    <div class="code-example">
+      <pre><code class="language-bash"># Go version 1.21 atau lebih baru
+go version
+
+# Git untuk version control
+git --version
+
+# Code editor (VS Code, GoLand, Vim, dll)
+code --version</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>⚡ Quick Start</h2>
+    <p>Ikuti langkah-langkah berikut untuk membuat project Lokstra pertama Anda:</p>
+    
+    <h3>1. Install Lokstra CLI</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Install Lokstra CLI tool
+go install github.com/primadi/lokstra_cli@latest
+
+# Verify installation
+lokstra --version</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+
+    <h3>2. Create New Project</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Create new project with Lokstra CLI
+lokstra create my-api
+
+# Navigate to project directory
+cd my-api
+
+# Initialize dependencies
+go mod tidy</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+
+    <h3>3. Project Structure</h3>
+    <p>Lokstra CLI akan membuat struktur project yang terorganisir:</p>
+    <div class="code-example">
+      <pre><code class="language-bash">my-api/
+├── cmd/
+│   └── main.go             # Entry point aplikasi
+├── internal/
+│   ├── handlers/           # HTTP handlers
+│   ├── middleware/         # Custom middleware
+│   ├── models/            # Data models
+│   ├── services/          # Business logic
+│   └── repositories/      # Data access layer
+├── pkg/
+│   ├── config/            # Configuration management
+│   ├── database/          # Database connection
+│   └── utils/             # Utility functions
+├── api/
+│   └── routes.go          # Route definitions
+├── configs/
+│   ├── app.yaml          # Application config
+│   └── database.yaml     # Database config
+├── docs/                 # API documentation
+├── deployments/          # Docker & K8s configs
+├── go.mod
+├── go.sum
+├── .env.example          # Environment variables template
+├── .gitignore
+└── README.md</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+
+    <h3>4. Run Your First Server</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Run the server using Lokstra CLI
+lokstra run
+
+# Atau menggunakan Go command
+go run cmd/main.go
+
+# Server akan berjalan di http://localhost:8080
+# ✅ [Lokstra] Server started on :8080</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔧 Lokstra CLI Commands</h2>
+    <p>Lokstra CLI menyediakan berbagai command untuk mempercepat development:</p>
+    
+    <h3>Project Management</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Create new project
+lokstra create my-project
+
+# Generate new handler
+lokstra generate handler UserHandler
+
+# Generate new model
+lokstra generate model User
+
+# Generate new service
+lokstra generate service UserService
+
+# Generate complete CRUD
+lokstra generate crud User</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+
+    <h3>Development Tools</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Run server with hot reload
+lokstra dev
+
+# Run production server
+lokstra run
+
+# Build application
+lokstra build
+
+# Run tests
+lokstra test
+
+# Format code
+lokstra fmt</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+
+    <h3>Database Operations</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Generate migration
+lokstra migrate create create_users_table
+
+# Run migrations
+lokstra migrate up
+
+# Rollback migrations
+lokstra migrate down
+
+# Migration status
+lokstra migrate status</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>🔧 Basic Configuration</h2>
+    <p>Lokstra CLI menggunakan file konfigurasi YAML untuk kemudahan pengaturan:</p>
+    
+    <h3>Application Config (configs/app.yaml)</h3>
+    <div class="code-example">
+      <pre><code class="language-yaml"># Application configuration
+app:
+  name: "my-api"
+  version: "1.0.0"
+  environment: "development"
+
+server:
+  host: "localhost"
+  port: 8080
+  read_timeout: 10s
+  write_timeout: 10s
+
+log:
+  level: "info"
+  format: "json"
+  output: "stdout"
+
+cors:
+  allowed_origins: ["*"]
+  allowed_methods: ["GET", "POST", "PUT", "DELETE"]
+  allowed_headers: ["*"]</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+
+    <h3>Database Config (configs/database.yaml)</h3>
+    <div class="code-example">
+      <pre><code class="language-yaml"># Database configuration
+database:
+  driver: "postgres"
+  host: "localhost"
+  port: 5432
+  username: "postgres"
+  password: "password"
+  database: "my_api_db"
+  ssl_mode: "disable"
+  max_connections: 25
+  max_idle_connections: 5
+  connection_lifetime: 5m
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""
+  database: 0
+  pool_size: 10</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+    
+    <h3>Environment Variables (.env)</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Environment-specific settings
+LOKSTRA_ENV=development
+LOKSTRA_CONFIG_PATH=./configs
+
+# Database credentials (override YAML config)
+DB_PASSWORD=your_secure_password
+DB_HOST=localhost
+
+# Redis credentials
+REDIS_PASSWORD=your_redis_password
+
+# JWT Secret
+JWT_SECRET=your_jwt_secret_key
+
+# External API keys
+EXTERNAL_API_KEY=your_api_key</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>🛠️ Creating Your First Handler</h2>
+    <p>Gunakan Lokstra CLI untuk generate handler secara otomatis:</p>
+    
+    <h3>Generate Handler</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Generate complete CRUD handler
+lokstra generate crud User
+
+# Atau generate handler manual
+lokstra generate handler UserHandler</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+    
+    <h3>Generated Handler Example</h3>
+    <div class="code-example">
+      <pre><code class="language-go">package handlers
+
+import (
+    "net/http"
+    "strconv"
+    
+    "my-api/internal/models"
+    "my-api/internal/services"
+    
+    "github.com/gin-gonic/gin"
+    "github.com/primadi/lokstra"
+)
+
+type UserHandler struct {
+    userService *services.UserService
+}
+
+func NewUserHandler(userService *services.UserService) *UserHandler {
+    return &UserHandler{
+        userService: userService,
+    }
+}
+
+// GetUsers handles GET /users
+func (h *UserHandler) GetUsers(c *gin.Context) {
+    ctx := lokstra.NewContext(c)
+    
+    users, err := h.userService.GetAll(ctx.Context())
+    if err != nil {
+        ctx.ErrorResponse(http.StatusInternalServerError, "Failed to fetch users", err)
+        return
+    }
+    
+    ctx.SuccessResponse("Users retrieved successfully", users)
+}
+
+// GetUser handles GET /users/:id
+func (h *UserHandler) GetUser(c *gin.Context) {
+    ctx := lokstra.NewContext(c)
+    
+    id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+    if err != nil {
+        ctx.ErrorResponse(http.StatusBadRequest, "Invalid user ID", err)
+        return
+    }
+    
+    user, err := h.userService.GetByID(ctx.Context(), id)
+    if err != nil {
+        ctx.ErrorResponse(http.StatusNotFound, "User not found", err)
+        return
+    }
+    
+    ctx.SuccessResponse("User retrieved successfully", user)
+}
+
+// CreateUser handles POST /users
+func (h *UserHandler) CreateUser(c *gin.Context) {
+    ctx := lokstra.NewContext(c)
+    
+    var req models.CreateUserRequest
+    if err := ctx.BindJSON(&req); err != nil {
+        ctx.ErrorResponse(http.StatusBadRequest, "Invalid request", err)
+        return
+    }
+    
+    user, err := h.userService.Create(ctx.Context(), &req)
+    if err != nil {
+        ctx.ErrorResponse(http.StatusInternalServerError, "Failed to create user", err)
+        return
+    }
+    
+    ctx.SuccessResponse("User created successfully", user, http.StatusCreated)
+}</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>🛣️ Setting Up Routes</h2>
+    <div class="code-example">
+      <pre><code class="language-go">package api
+
+import (
+    "my-api/internal/handlers"
+    "my-api/internal/services"
+    "my-api/internal/repositories"
+    
+    "github.com/primadi/lokstra"
+)
+
+func SetupRoutes(app *lokstra.App) {
+    // Initialize dependencies
+    userRepo := repositories.NewUserRepository(app.DB())
+    userService := services.NewUserService(userRepo)
+    userHandler := handlers.NewUserHandler(userService)
+    
+    // API versioning
+    v1 := app.Group("/api/v1")
+    
+    // Health check
+    v1.GET("/health", func(ctx *lokstra.Context) error {
+        return ctx.JSON(lokstra.H{
+            "status": "ok",
+            "message": "Service is healthy",
+            "timestamp": time.Now(),
+        })
+    })
+    
+    // User routes
+    users := v1.Group("/users")
+    users.GET("", userHandler.GetUsers)
+    users.GET("/:id", userHandler.GetUser)
+    users.POST("", userHandler.CreateUser)
+    users.PUT("/:id", userHandler.UpdateUser)
+    users.DELETE("/:id", userHandler.DeleteUser)
+    
+    // Authentication routes
+    auth := v1.Group("/auth")
+    auth.POST("/login", userHandler.Login)
+    auth.POST("/register", userHandler.Register)
+    auth.POST("/refresh", userHandler.RefreshToken)
+}</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>🧪 Testing Your API</h2>
+    <p>Test endpoint yang telah dibuat menggunakan Lokstra CLI:</p>
+    
+    <h3>Using Lokstra CLI</h3>
+    <div class="code-example">
+      <pre><code class="language-bash"># Run all tests
+lokstra test
+
+# Run with coverage
+lokstra test --coverage
+
+# Test specific package
+lokstra test ./internal/handlers</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+    
+    <h3>Health Check</h3>
+    <div class="code-example">
+      <pre><code class="language-bash">curl http://localhost:8080/api/v1/health</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+    
+    <h3>Get All Users</h3>
+    <div class="code-example">
+      <pre><code class="language-bash">curl http://localhost:8080/api/v1/users</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+    
+    <h3>Create New User</h3>
+    <div class="code-example">
+      <pre><code class="language-bash">curl -X POST http://localhost:8080/api/v1/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "password": "securepassword123"
+  }'</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+
+    <h3>Generated Tests</h3>
+    <div class="code-example">
+      <pre><code class="language-go">package handlers_test
+
+import (
+    "bytes"
+    "encoding/json"
+    "net/http"
+    "net/http/httptest"
+    "testing"
+    
+    "my-api/internal/handlers"
+    "my-api/internal/services"
+    
+    "github.com/stretchr/testify/assert"
+    "github.com/primadi/lokstra"
+)
+
+func TestUserHandler_GetUsers(t *testing.T) {
+    // Setup
+    app := lokstra.New()
+    userService := &mockUserService{}
+    userHandler := handlers.NewUserHandler(userService)
+    
+    // Create request
+    req := httptest.NewRequest("GET", "/api/v1/users", nil)
+    rec := httptest.NewRecorder()
+    
+    // Execute
+    app.GET("/api/v1/users", userHandler.GetUsers)
+    app.ServeHTTP(rec, req)
+    
+    // Assert
+    assert.Equal(t, http.StatusOK, rec.Code)
+    
+    var response map[string]interface{}
+    err := json.Unmarshal(rec.Body.Bytes(), &response)
+    assert.NoError(t, err)
+    assert.Equal(t, "success", response["status"])
+}</code></pre>
+      <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>📚 Next Steps</h2>
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+      <div class="card">
+        <h3>🏗️ Architecture</h3>
+        <p>Pelajari arsitektur dan design patterns yang digunakan Lokstra</p>
+        <a href="architecture.html" class="btn">Learn More</a>
+      </div>
+      
+      <div class="card">
+        <h3>�️ CLI Documentation</h3>
+        <p>Dokumentasi lengkap Lokstra CLI dan command reference</p>
+        <a href="https://github.com/primadi/lokstra_cli/blob/main/README.md" target="_blank" class="btn github">View CLI Docs</a>
+      </div>
+      
+      <div class="card">
+        <h3>�📖 Framework Documentation</h3>
+        <p>Dokumentasi lengkap Lokstra Framework API dan fitur-fitur advanced</p>
+        <a href="https://github.com/primadi/lokstra/blob/main/README.md" target="_blank" class="btn github">View Framework Docs</a>
+      </div>
+      
+      <div class="card">
+        <h3>🧪 Examples</h3>
+        <p>Contoh implementasi untuk berbagai use cases menggunakan CLI</p>
+        <a href="https://github.com/primadi/lokstra_cli/tree/main/examples" target="_blank" class="btn primary">View Examples</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🤝 Need Help?</h2>
+    <p>Jika menemui kendala atau butuh bantuan:</p>
+    <ul>
+      <li>�️ <a href="https://github.com/primadi/lokstra_cli/blob/main/README.md" target="_blank">Dokumentasi Lokstra CLI</a></li>
+      <li>📖 <a href="https://github.com/primadi/lokstra/blob/main/README.md" target="_blank">Dokumentasi Lokstra Framework</a></li>
+      <li>🐛 Laporkan bug CLI di <a href="https://github.com/primadi/lokstra_cli/issues" target="_blank">CLI Issues</a></li>
+      <li>🐛 Laporkan bug Framework di <a href="https://github.com/primadi/lokstra/issues" target="_blank">Framework Issues</a></li>
+      <li>💬 Diskusi di <a href="https://github.com/primadi/lokstra/discussions" target="_blank">GitHub Discussions</a></li>
+      <li>📧 Kontak developer: <a href="mailto:primadi.setiawan@gmail.com">primadi.setiawan@gmail.com</a></li>
+    </ul>
+  </section>
+</main>

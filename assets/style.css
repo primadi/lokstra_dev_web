@@ -501,6 +501,100 @@ ol {
   border-radius: 8px;
   overflow: hidden;
   margin: 1rem 0;
+  position: relative;
+}
+
+.code-header {
+  background: #0f172a;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: #38bdf8;
+}
+
+/* When copy-btn is used inside code-header, behave normally */
+.code-header .copy-btn {
+  position: static;
+  width: auto;
+  height: auto;
+  display: inline-block;
+}
+
+/* When copy-btn is NOT inside code-header, behave as floating */
+.code-example .copy-btn:not(.code-header .copy-btn) {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  padding: 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  padding: 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  line-height: 1;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-copy-btn:hover,
+.code-example .copy-btn:not(.code-header .copy-btn):hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: #38bdf8;
+  transform: scale(1.05);
+}
+
+.floating-copy-btn:hover {
+  background: rgba(56, 189, 248, 0.1);
+  border-color: #38bdf8;
+  transform: scale(1.05);
 }
 
 .code-example pre {

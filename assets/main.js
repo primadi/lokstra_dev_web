@@ -1,5 +1,57 @@
 // Lokstra Framework Website - Main JavaScript
 
+// Copy code functionality
+function copyCode(button) {
+  console.log("Copy button clicked:", button);
+
+  // Find parent container (could be .code-example or any div with code)
+  const parentContainer = button.parentElement;
+  console.log("Parent container found:", parentContainer);
+
+  // Find code element within parent
+  const codeElement = parentContainer.querySelector("code");
+  console.log("Code element found:", codeElement);
+
+  if (!codeElement) {
+    console.error("Code element not found!");
+    return;
+  }
+
+  const code = codeElement.textContent.trim();
+  console.log("Code to copy:", code);
+
+  navigator.clipboard
+    .writeText(code)
+    .then(() => {
+      console.log("Copy successful");
+      const originalText = button.textContent;
+      button.textContent = "✅";
+      button.style.backgroundColor = "#059669";
+
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.backgroundColor = "";
+      }, 2000);
+    })
+    .catch((err) => {
+      console.error("Failed to copy: ", err);
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = code;
+      document.body.appendChild(textArea);
+      textArea.select();
+      // @ts-ignore: document.execCommand is deprecated but used for backward compatibility
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+
+      const originalText = button.textContent;
+      button.textContent = "✅";
+      setTimeout(() => {
+        button.textContent = originalText;
+      }, 2000);
+    });
+}
+
 // Global variables
 // (removed mobileNavInitialized flag as it was causing issues)
 
@@ -114,6 +166,48 @@ function initMobileNav() {
   console.log("Mobile navigation initialized");
 }
 
+// Initialize SPA navigation for all internal links
+function initSPALinks() {
+  console.log("Initializing SPA links...");
+
+  // Handle all internal links (not just navbar links)
+  document.querySelectorAll("a[href]").forEach((link) => {
+    const href = link.getAttribute("href");
+
+    // Skip if already has event listener or is external link
+    if (
+      link._spaInitialized ||
+      !href ||
+      href.startsWith("http") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:") ||
+      href.startsWith("#")
+    ) {
+      return;
+    }
+
+    // Add event listener for internal links
+    if (
+      href.endsWith(".html") ||
+      ["about", "architecture", "blog", "get-started"].some((page) =>
+        href.includes(page)
+      )
+    ) {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("SPA link clicked:", href);
+        spaNavigate(href);
+      });
+
+      // Mark as initialized to avoid duplicate listeners
+      link._spaInitialized = true;
+      console.log("SPA link initialized:", href);
+    }
+  });
+
+  console.log("SPA links initialization complete");
+}
+
 // SPA navigation: load page content and update history (supports hash routing)
 async function spaNavigate(route, isPopState) {
   // Normalize route from hash or href
@@ -150,6 +244,9 @@ async function spaNavigate(route, isPopState) {
   // Re-initialize mobile nav after navbar is loaded
   setTimeout(initMobileNav, 100);
 
+  // Initialize SPA navigation for all internal links
+  setTimeout(initSPALinks, 150);
+
   // Trigger animations after content is loaded
   setTimeout(triggerAnimations, 150);
 
@@ -160,6 +257,15 @@ async function spaNavigate(route, isPopState) {
   setTimeout(() => {
     setActiveNavigation(page, isHome);
   }, 200);
+
+  // Scroll to top after page content is loaded
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, 250);
 
   // Initialize visitor counter for home page
   // if (isHome) {
@@ -260,6 +366,9 @@ async function initWebsite() {
 
   // Initialize mobile navigation
   setTimeout(initMobileNav, 100);
+
+  // Initialize SPA navigation for all internal links
+  setTimeout(initSPALinks, 150);
 
   // Initialize language switcher
   setTimeout(initLanguageSwitcher, 150);

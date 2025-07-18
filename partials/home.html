@@ -35,9 +35,9 @@
         </svg>
         View on GitHub
         </a>
-        <a href="#get-started" class="btn primary">
-        🚀 Get Started
-        </a>
+    <a href="get-started.html" class="btn primary">
+      🚀 Get Started
+    </a>
     </div>
     </section>
     <section>
@@ -67,11 +67,12 @@
         <p>Mulai membangun service backend dengan Lokstra hanya dalam 3 langkah sederhana:</p>
         
         <div style="margin: 2rem 0;">
-        <div style="background: #1e293b; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--accent);">
+        <div style="background: #1e293b; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--accent); position: relative;">
             <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">📦 Langkah 1: Setup Project</h4>
             <code style="background: #2d3748; padding: 0.5rem; border-radius: 4px; display: block;">
             go mod init myapp && go get github.com/primadi/lokstra
             </code>
+            <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
         </div>
         
         <div style="background: #1e293b; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid var(--accent);">
@@ -81,27 +82,29 @@
         </div>
         
         <div class="code-example">
-        <pre><code class="language-go">package main
+            <pre><code class="language-go">package main
 
-    import "github.com/primadi/lokstra"
+import "github.com/primadi/lokstra"
 
-    func main() {
-        ctx := lokstra.NewGlobalContext()
-        app := lokstra.NewApp(ctx, "myapp", ":8080")
+func main() {
+    ctx := lokstra.NewGlobalContext()
+    app := lokstra.NewApp(ctx, "myapp", ":8080")
 
-        app.GET("/hello", func(c *lokstra.Context) error {
-            return ctx.Ok("Hello from Lokstra!")
-        })
+    app.GET("/hello", func(ctx *lokstra.Context) error {
+        return ctx.Ok("Hello from Lokstra!")
+    })
 
-        app.Start()
-    }</code></pre>
+    app.Start()
+}</code></pre>
+            <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
         </div>
         
-        <div style="background: #1e293b; padding: 1rem; border-radius: 8px; margin-top: 1rem; border-left: 4px solid var(--accent);">
+        <div style="background: #1e293b; padding: 1rem; border-radius: 8px; margin-top: 1rem; border-left: 4px solid var(--accent); position: relative;">
         <h4 style="margin: 0 0 0.5rem 0; color: var(--accent);">🚀 Langkah 3: Jalankan Server</h4>
         <code style="background: #2d3748; padding: 0.5rem; border-radius: 4px; display: block;">
             go run main.go
         </code>
+        <button class="floating-copy-btn" onclick="copyCode(this)" title="Copy">📋</button>
         <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: #94a3b8;">Server akan berjalan di http://localhost:8080</p>
         </div>
     </section>

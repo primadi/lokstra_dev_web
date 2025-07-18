@@ -30,6 +30,7 @@ export default [
         loadHTML: "readonly",
         loadMetaTags: "readonly",
         crypto: "readonly",
+        navigator: "readonly",
       },
     },
     rules: {
