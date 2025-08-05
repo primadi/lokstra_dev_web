@@ -87,8 +87,8 @@
 import "github.com/primadi/lokstra"
 
 func main() {
-    ctx := lokstra.NewGlobalContext()
-    app := lokstra.NewApp(ctx, "myapp", ":8080")
+    regCtx := lokstra.NewGlobalRegistrationContext()
+    app := lokstra.NewApp(regCtx, "myapp", ":8080")
 
     app.GET("/hello", func(ctx *lokstra.Context) error {
         return ctx.Ok("Hello from Lokstra!")
