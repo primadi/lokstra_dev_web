@@ -28,7 +28,7 @@
       "description": "Service configurations",
       "items": {
         "type": "object",
-        "required": ["name", "type"],
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string",
@@ -37,8 +37,7 @@
           },
           "type": {
             "type": "string",
-            "description": "Service type",
-            "minLength": 1
+            "description": "Service type, if empty same as name"
           },
           "enable": {
             "type": "boolean",
@@ -59,7 +58,7 @@
       "description": "Middleware configurations",
       "items": {
         "type": "object",
-        "required": ["name", "type"],
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string",
@@ -68,8 +67,7 @@
           },
           "type": {
             "type": "string",
-            "description": "Middleware type",
-            "minLength": 1
+            "description": "Middleware type, if empty same as name"
           },
           "enable": {
             "type": "boolean",
