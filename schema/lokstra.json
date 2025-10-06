@@ -50,7 +50,36 @@
             "additionalProperties": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        
+        "if": {
+          "anyOf": [
+            {
+              "properties": {
+                "type": { "const": "dbpool_pg" }
+              },
+              "required": ["type"]
+            },
+            {
+              "properties": {
+                "name": { "const": "dbpool_pg" }
+              },
+              "required": ["name"],
+              "not": {
+                "properties": {
+                  "type": { "minLength": 1 }
+                },
+                "required": ["type"]
+              }
+            }
+          ]
+        },
+        "then": {
+          "required": ["config"],
+          "properties": {
+            "config": { "$ref": "#/definitions/dbpool_pg" }
+          }
+        }
       }
     },
     "middlewares": {
@@ -97,8 +126,8 @@
           },
           "baseUrl": {
             "type": "string",
-            "description": "Base URL of the server (default: http://localhost)",
-            "pattern": "^https?://[^\\s/$.?#].[^\\s]*$"
+            "description": "Base URL of the server (default: http://localhost). Supports environment variables: ${VAR:default}",
+            "pattern": "^(https?://[^\\s/$.?#].[^\\s]*|\\$\\{[A-Za-z_][A-Za-z0-9_]*(:.*)?\\})$"
           },
           "deployment-id": {
             "type": "string",
@@ -143,5 +172,42 @@
       }
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+
+
+
+
+  "definitions": {
+    "dbpool_pg": {
+      "$id": "dbpool_pg",
+      "type": "object",
+      "properties": {
+        "dsn": { "type": "string" },
+        "host": { "type": "string" },
+        "port": { "type": ["string", "integer"] },
+        "database": { "type": "string" },
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "min_conns": { "type": ["integer", "string"] },
+        "max_conns": { "type": ["integer", "string"] },
+        "max_idle_time": { "type": "string" },
+        "max_lifetime": { "type": "string" },
+        "sslmode": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "dsn": { "not": { "minLength": 1 } }
+            },
+            "required": []
+          },
+          "then": {
+            "required": ["host", "port", "database"]
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
 }
