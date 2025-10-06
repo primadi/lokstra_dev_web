@@ -126,8 +126,17 @@
           },
           "baseUrl": {
             "type": "string",
-            "description": "Base URL of the server (default: http://localhost). Supports environment variables: ${VAR:default}",
-            "pattern": "^(https?://[^\\s/$.?#].[^\\s]*|\\$\\{[A-Za-z_][A-Za-z0-9_]*(:.*)?\\})$"
+            "description": "Base URL of the server (default: http://localhost). Accepts a plain URI (any scheme) or env placeholders: ${KEY}, ${ENV:KEY:DEFAULT}, ${KEY:DEFAULT}. DEFAULT must be a URI.",
+            "pattern": "^(?:[A-Za-z][A-Za-z0-9+.-]*:(?:\\/\\/\\S+|\\S*)|\\$\\{(?:ENV:[A-Za-z_][A-Za-z0-9_]*:[A-Za-z][A-Za-z0-9+.-]*:(?:\\/\\/[^\\s}]+|[^\\s}]*)|[A-Za-z_][A-Za-z0-9_]*:[A-Za-z][A-Za-z0-9+.-]*:(?:\\/\\/[^\\s}]+|[^\\s}]*)|[A-Za-z_][A-Za-z0-9_]*)\\})$",
+            "examples": [
+              "http://localhost",
+              "unix:///var/run/app.sock",
+              "sock:///tmp/app.sock",
+              "${BASE_URL}",
+              "${BASE_URL:http://localhost}",
+              "${BASE_URL:unix:///var/run/app.sock}",
+              "${ENV:API_ENDPOINT:https://api.example.com/v1}"
+            ]
           },
           "deployment-id": {
             "type": "string",
