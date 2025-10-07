@@ -33,11 +33,13 @@
         {
           "type": "object",
           "description": "Layered mode: Services grouped by layer name. Each layer can only depend on previous layers.",
+          "minProperties": 1,
           "patternProperties": {
-            "^[a-z][a-z0-9-]*$": {
+            ".*": {
               "type": "array",
               "description": "Services in this layer",
-              "items": { "$ref": "#/definitions/service-layered" }
+              "items": { "$ref": "#/definitions/service-layered" },
+              "minItems": 1
             }
           },
           "additionalProperties": false,
